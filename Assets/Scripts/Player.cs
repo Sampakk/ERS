@@ -53,16 +53,16 @@ public class Player : MonoBehaviour
 
         }
             //Get mouse movement
-            mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-            mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+            mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
+            mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
 
-            //Apply vertical rotation and clamp it
-            xRotation -= mouseY;
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-            cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        //Apply vertical rotation and clamp it
+        xRotation = cam.localEulerAngles.x + mouseY;
+        Quaternion cameraRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        cam.localRotation = cameraRotation;
 
-            //Rotate player horizontally
-            transform.Rotate(Vector3.up * mouseX);
+        //Rotate player horizontally
+        transform.Rotate(Vector3.up * mouseX);
     }
     void FixedUpdate()
     {
