@@ -49,12 +49,11 @@ public class Player : MonoBehaviour
             //Jump
             if (Input.GetButtonDown("Jump"))
                 rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
-
-
         }
-            //Get mouse movement
-            mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
-            mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+
+        //Get mouse movement
+        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         //Apply vertical rotation and clamp it
         xRotation = cam.localEulerAngles.x + mouseY;
@@ -78,10 +77,10 @@ public class Player : MonoBehaviour
         Vector3 horizontalVelocity = new Vector3(moveDir.x * moveSpeed, verticalVelocity, moveDir.z * moveSpeed);
         rb.velocity = horizontalVelocity;
     }
+
     bool IsGrounded()
     {
         if (Physics.CheckSphere(groundCheck.position, groundDistance, groundMask)) return true;
         return false;
     }
-
 }
