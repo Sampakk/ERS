@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
         //Rotate player horizontally
         transform.Rotate(Vector3.up * mouseX);
     }
+
     void FixedUpdate()
     {
         //Get move direction
