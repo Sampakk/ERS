@@ -10,6 +10,10 @@ public class Interaction : MonoBehaviour
     Rigidbody itemrb;
     Collider itemcol;
 
+    float chargeTimer = 0f;
+    float chargeTimeMax = 1f;
+    public float throwForce = 25f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,36 +32,37 @@ public class Interaction : MonoBehaviour
                 
 
             }
-            else
+           
+        } 
+        else
+        {
+            if (hands.transform.childCount > 0)
             {
-                if (hands.transform.childCount > 0)
+                //Drop item
+                if (Input.GetMouseButtonDown(1))
                 {
-                    //Drop item
-                    if (Input.GetMouseButtonDown(1))
-                    {
-                        DropItem();
-                    }
+                    DropItem();
+                }
 
-                    //Charge timer starts
-                    /*if (Input.GetMouseButton(0))
+                //Charge timer starts
+                if (Input.GetMouseButton(0))
+                {
+                    chargeTimer += Time.deltaTime;
+                    if (chargeTimer >= chargeTimeMax)
                     {
-                        chargeTimer += Time.deltaTime;
-                        if (chargeTimer >= chargeTimeMax)
-                        {
-                            chargeTimer = chargeTimeMax;
-                        }
+                        chargeTimer = chargeTimeMax;
                     }
+                }
 
-                    //Throws with the force of the timer
-                    if (Input.GetMouseButtonUp(0))
-                    {
-                        if (chargeTimer > 0.2f) Throw();
-                        else chargeTimer = 0;
-                    }*/
+                //Throws with the force of the timer
+                if (Input.GetMouseButtonUp(0))
+                {
+                    if (chargeTimer > 0.2f) Throw();
+                    else chargeTimer = 0;
                 }
             }
         }
-
+        Debug.Log(hands.childCount);
     }
     public bool IsLookingObject()
     {
@@ -105,5 +110,22 @@ public class Interaction : MonoBehaviour
         itemrb.useGravity = true;
         itemrb.freezeRotation = false;
         itemrb.constraints = RigidbodyConstraints.None;
+    }
+    void Throw()
+    {
+        Vector3 throwDir = transform.forward + (Vector3.up / 4f);
+        ThrowItem(throwDir, throwForce * GetThrowMult());
+
+        chargeTimer = 0;
+    }
+    public float GetThrowMult()
+    {
+        return chargeTimer / chargeTimeMax;
+    }
+    void ThrowItem(Vector3 direction, float throwForce)
+    {
+        DropItem();
+
+        itemrb.AddForce(direction * throwForce, ForceMode.Impulse);
     }
 }
