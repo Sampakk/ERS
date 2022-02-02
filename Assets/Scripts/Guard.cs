@@ -23,6 +23,8 @@ public class Guard : MonoBehaviour
     public float damage = 20f;
     public float attackDelay = 0.5f;
     public float attackRange = 1f;
+
+    [Header("Spotting")]
     public float spotInterval = 0.5f;
     public float spotRadius = 5f;
     public LayerMask playerMask;
@@ -84,8 +86,11 @@ public class Guard : MonoBehaviour
                 Vector3 checkPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
                 if (Physics.CheckSphere(checkPos, spotRadius, playerMask))
                 {
-                    isChasing = true;
-                    SetTargetDestination(target.position);
+                    if (CanSeePlayer())
+                    {
+                        isChasing = true;
+                        SetTargetDestination(target.position);
+                    }                  
                 }
                 else
                 {
@@ -123,6 +128,24 @@ public class Guard : MonoBehaviour
     public bool IsChasing()
     {
         return isChasing;
+    }
+
+    public bool CanSeePlayer()
+    {
+        Vector3 checkPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+        Vector3 targetPos = new Vector3(target.position.x, target.position.y + 1f, target.position.z);
+        Vector3 direction = (targetPos - checkPos).normalized;
+
+        RaycastHit hit;
+        if (Physics.Raycast(checkPos, direction, out hit, Mathf.Infinity, playerMask, QueryTriggerInteraction.Ignore))
+        {
+            Player player = hit.collider.GetComponent<Player>();
+
+            if (player != null) return true;
+            else return false;
+        }
+
+        return false;
     }
 
     public void SetTargetDestination(Vector3 targetPos)
