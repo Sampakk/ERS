@@ -2,39 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class GuardManager : MonoBehaviour
 {
-    public int maxGuards = 3;
-    int guardsAlive;
+    public GameObject guardPrefab;
 
-    [Header("Map Positions")]
-    public Transform spawnpoints;
-    public Transform waypoints;
-    Transform[] allWaypoints;
+    [Header("Paths")]
+    public Transform[] paths;
 
     // Start is called before the first frame update
     void Start()
     {
-        allWaypoints = new Transform[waypoints.childCount];
-        for (int i = 0; i < waypoints.childCount; i++)
+        if (Application.isPlaying)
         {
-            allWaypoints[i] = waypoints.GetChild(i);
+            //Instantiate guards to scene on start, each at the start of their own path
+            foreach (Transform path in paths)
+            {
+                SpawnGuardOnPath(path);
+            }
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void SpawnGuardOnPath(Transform path)
     {
-        
+        GameObject guard = Instantiate(guardPrefab, path.GetChild(0).position, Quaternion.identity);
+        guard.GetComponent<Guard>().SetupPath(path);
     }
 
-    public Vector3 GetRandomWaypoint()
+    void OnDrawGizmos()
     {
-        Vector3 waypointPos = new Vector3();
+        if (Application.isPlaying)
+            return;
 
-        int random = Random.Range(0, allWaypoints.Length);
-        waypointPos = allWaypoints[random].position;
+        foreach (Transform path in paths)
+        {
+            Transform lastPoint = null;
+            foreach (Transform waypoint in path)
+            {
+                if (lastPoint != null)
+                {
+                    Gizmos.DrawLine(lastPoint.position, waypoint.position);
+                }
 
-        return waypointPos;
+                lastPoint = waypoint;
+            }
+        }
     }
 }

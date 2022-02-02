@@ -38,6 +38,9 @@ public class Guard : MonoBehaviour
     public bool isAlive = true;
     Transform target;
 
+    List<Transform> waypoints = new List<Transform>();
+    int waypointIndex;
+
     public float health = 50f;
     
     // Start is called before the first frame update
@@ -78,9 +81,6 @@ public class Guard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-            Slowdown(3f);
-
         if (isAlive)
         {
             //Update animations
@@ -112,8 +112,13 @@ public class Guard : MonoBehaviour
             {
                 if (agent.remainingDistance < 0.25f)
                 {
-                    //Get next position
-                    SetTargetDestination(guardManager.GetRandomWaypoint());
+                    //Check if path is complete and start it again
+                    if (waypointIndex == waypoints.Count - 1) waypointIndex = 0;
+                    else waypointIndex++;
+
+                    Debug.Log("Waypoint: " + waypoints[waypointIndex]);
+
+                    SetTargetDestination(waypoints[waypointIndex].position);
                 }
             }
             else //Try to attack
@@ -161,6 +166,16 @@ public class Guard : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void SetupPath(Transform path)
+    {
+        foreach(Transform waypoint in path)
+        {
+            waypoints.Add(waypoint);
+        }
+
+        SetTargetDestination(waypoints[0].position);
     }
 
     public void SetTargetDestination(Vector3 targetPos)
