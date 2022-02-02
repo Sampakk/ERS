@@ -717,10 +717,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8390853728582807489, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
-      propertyPath: groundMask.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 8390853728582807494, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
       propertyPath: m_RootOrder
       value: 0

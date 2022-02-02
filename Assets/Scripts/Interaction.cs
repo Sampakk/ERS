@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Interaction : MonoBehaviour
 {
+    Camera cam;
+
     public Transform hands;
     public LayerMask Objects;
     Transform item;
@@ -14,11 +16,13 @@ public class Interaction : MonoBehaviour
     float chargeTimeMax = 1f;
     public float throwForce = 25f;
     
-
     // Start is called before the first frame update
     void Start()
     {
-        if (itemcol == null) itemcol = GetComponentInChildren<Collider>();
+        cam = GetComponentInChildren<Camera>();
+
+        if (itemcol == null) 
+            itemcol = GetComponentInChildren<Collider>();
     }
 
     // Update is called once per frame
@@ -66,7 +70,7 @@ public class Interaction : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 2f, Objects) && hands.transform.childCount == 0)
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 2f, Objects) && hands.transform.childCount == 0)
         {
             item = hit.transform;
             itemrb = hit.rigidbody;
@@ -136,12 +140,14 @@ public class Interaction : MonoBehaviour
 
         itemrb.AddForce(direction * throwForce, ForceMode.Impulse);
     }
+
     public Item GetItemInHands()
     {
         if (HasItemInHands())
         {
             return GetComponentInChildren<Item>();
         }
+
         return null;
     }
 }

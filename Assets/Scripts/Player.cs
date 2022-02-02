@@ -5,21 +5,24 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Rigidbody rb;
-    public Transform cam;
-    public Transform hands;
+    Transform cam;
 
+    [Header("Movement")]
     float moveSpeedMultiplier = 1f;
     public float walkSpeed = 4f;
     public float sprintSpeed = 8f;
     public float jumpHeight = 3f;
+
+    [Header("Ground check")]
     public Transform groundCheck;
     public float groundDistance = 0.45f;
     public LayerMask groundMask;
 
+    [Header("Mouselook")]
+    public float mouseSensitivity = 2f;
+
     float moveX, moveZ;
     float moveSpeed;
-
-    public float mouseSensitivity = 2f;
     float mouseX, mouseY;
     float xRotation = 0f;
 
@@ -30,7 +33,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        cam = GetComponentInChildren<Camera>().transform;
         interact = GetComponent<Interaction>();
+
         //Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -52,8 +57,7 @@ public class Player : MonoBehaviour
         if (IsGrounded())
         {
             //Apply walk speed
-            moveSpeed = walkSpeed * moveSpeedMultiplier;
-            
+            moveSpeed = walkSpeed * moveSpeedMultiplier;        
 
             if (interact.HasItemInHands() != true)
             {
@@ -61,6 +65,7 @@ public class Player : MonoBehaviour
                 if (Input.GetKey(KeyCode.LeftShift) && moveZ > 0)
                     moveSpeed = sprintSpeed;
             }
+
             //Jump
             if (Input.GetButtonDown("Jump"))
                 rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
