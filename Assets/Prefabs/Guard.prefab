@@ -884,6 +884,7 @@ MonoBehaviour:
   hurtSound: {fileID: 0}
   dieSound: {fileID: 0}
   speed: 5
+  slowSpeed: 2
   angularSpeed: 360
   damage: 20
   attackDelay: 0.5

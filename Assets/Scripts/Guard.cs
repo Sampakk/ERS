@@ -20,6 +20,7 @@ public class Guard : MonoBehaviour
 
     [Header("Stats")]
     public float speed = 5f;
+    public float slowSpeed = 3f;
     public float angularSpeed = 360f;
     public float damage = 20f;
     public float attackDelay = 0.5f;
@@ -77,6 +78,9 @@ public class Guard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+            Slowdown(3f);
+
         if (isAlive)
         {
             //Update animations
@@ -95,7 +99,7 @@ public class Guard : MonoBehaviour
                     {
                         isChasing = true;
                         SetTargetDestination(target.position);
-                    }                  
+                    }
                 }
                 else
                 {
@@ -121,6 +125,7 @@ public class Guard : MonoBehaviour
                 }
             }
         }
+
         if (health <= 0f)
         {
             Die();
@@ -208,6 +213,22 @@ public class Guard : MonoBehaviour
         myCol.enabled = false;
 
         EnableRagdoll();
+    }
+
+    public void Slowdown(float duration)
+    {
+        StartCoroutine(ResetWalk(duration));
+    }
+
+    IEnumerator ResetWalk(float delay)
+    {
+        agent.speed = slowSpeed;
+        anim.SetBool("Slowed", true);
+
+        yield return new WaitForSeconds(delay);
+
+        agent.speed = speed;
+        anim.SetBool("Slowed", false);
     }
 
     void EnableRagdoll()
