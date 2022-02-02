@@ -62,7 +62,6 @@ public class Interaction : MonoBehaviour
                 }
             }
         }
-        Debug.Log(hands.childCount);
     }
     public bool IsLookingObject()
     {
