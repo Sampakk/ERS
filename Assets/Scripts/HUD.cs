@@ -8,12 +8,15 @@ public class HUD : MonoBehaviour
 {
     Interaction interaction;
 
-    public TextMeshProUGUI interactionText;
+    public Image  interactIcon;
     public Image throwbar;
+    public Image Crosshair;
 
     // Start is called before the first frame update
     void Start()
     {
+        interactIcon.enabled = false;
+
         interaction = FindObjectOfType<Interaction>();
     }
 
@@ -27,21 +30,19 @@ public class HUD : MonoBehaviour
 
     void HandleInteraction()
     {
-        if (interaction.HasItemInHands())
-        {
-            interactionText.text = "Hold LMB to throw, press RMB to drop";
-        }
-        else
-        {
+       
             if (interaction.IsLookingObject())
             {
-                interactionText.text = "Press LMB to pick up item";
-            }
+            Crosshair.enabled = false;
+            interactIcon.enabled = true;
+        }
             else
             {
-                interactionText.text = "";
-            }
+            interactIcon.enabled = false;
+            Crosshair.enabled = true;
+           
         }
+        
     }
 
     void HandleThrowbar()
