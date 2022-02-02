@@ -13,6 +13,7 @@ public class Interaction : MonoBehaviour
     float chargeTimer = 0f;
     float chargeTimeMax = 1f;
     public float throwForce = 25f;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -134,5 +135,13 @@ public class Interaction : MonoBehaviour
         DropItem();
 
         itemrb.AddForce(direction * throwForce, ForceMode.Impulse);
+    }
+    public Item GetItemInHands()
+    {
+        if (HasItemInHands())
+        {
+            return GetComponentInChildren<Item>();
+        }
+        return null;
     }
 }

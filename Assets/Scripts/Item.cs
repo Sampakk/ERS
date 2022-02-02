@@ -55,5 +55,14 @@ public class Item : MonoBehaviour
 
         }
     }
+    public float MoveSpeedMultiplier()
+    {
+
+        if (type == Item.WeaponType.Heavy) return 0.6f;
+
+        else if (type == Item.WeaponType.Medium) return 0.8f;
+
+        else return 1;
+    }
 }
 

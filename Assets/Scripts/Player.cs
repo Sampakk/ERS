@@ -6,7 +6,9 @@ public class Player : MonoBehaviour
 {
     Rigidbody rb;
     public Transform cam;
+    public Transform hands;
 
+    float moveSpeedMultiplier = 1f;
     public float walkSpeed = 4f;
     public float sprintSpeed = 8f;
     public float jumpHeight = 3f;
@@ -21,11 +23,14 @@ public class Player : MonoBehaviour
     float mouseX, mouseY;
     float xRotation = 0f;
 
+    Interaction interact;
+    Item throwable;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
+        interact = GetComponent<Interaction>();
         //Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -33,6 +38,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (interact.HasItemInHands())
+            moveSpeedMultiplier = interact.GetItemInHands().MoveSpeedMultiplier();
+        else 
+            moveSpeedMultiplier = 1f;
+        
+        Debug.Log(moveSpeedMultiplier);
+
         //Get input
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical");
@@ -40,12 +52,15 @@ public class Player : MonoBehaviour
         if (IsGrounded())
         {
             //Apply walk speed
-            moveSpeed = walkSpeed;
+            moveSpeed = walkSpeed * moveSpeedMultiplier;
+            
 
-            //Override to run speed
-            if (Input.GetKey(KeyCode.LeftShift) && moveZ > 0 )
-                moveSpeed = sprintSpeed;
-
+            if (interact.HasItemInHands() != true)
+            {
+                //Override to run speed
+                if (Input.GetKey(KeyCode.LeftShift) && moveZ > 0)
+                    moveSpeed = sprintSpeed;
+            }
             //Jump
             if (Input.GetButtonDown("Jump"))
                 rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);

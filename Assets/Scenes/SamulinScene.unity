@@ -253,7 +253,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minForceToDMG: 10
   maxForceToDMG: 20
-  isBigObject: 1
   type: 0
 --- !u!54 &107838127
 Rigidbody:
@@ -382,7 +381,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minForceToDMG: 10
   maxForceToDMG: 20
-  isBigObject: 1
   type: 1
 --- !u!54 &242746594
 Rigidbody:
@@ -1148,7 +1146,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minForceToDMG: 10
   maxForceToDMG: 20
-  isBigObject: 0
   type: 2
 --- !u!54 &1541605815
 Rigidbody:
@@ -1396,6 +1393,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
+--- !u!4 &1797729074 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 744661814, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
+  m_PrefabInstance: {fileID: 8390853728463150386}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1804054243
 GameObject:
   m_ObjectHideFlags: 0
@@ -1484,6 +1486,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8390853728582807489, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
+      propertyPath: hands
+      value: 
+      objectReference: {fileID: 1797729074}
     - target: {fileID: 8390853728582807494, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
       propertyPath: m_RootOrder
       value: 2
