@@ -29,14 +29,11 @@ public class Interaction : MonoBehaviour
             if (IsLookingObject())
             {
                 PickItemUp();
-                
-
-            }
-           
+            }        
         } 
         else
         {
-            if (hands.transform.childCount > 0)
+            if (HasItemInHands())
             {
                 //Drop item
                 if (Input.GetMouseButtonDown(1))
@@ -63,6 +60,7 @@ public class Interaction : MonoBehaviour
             }
         }
     }
+
     public bool IsLookingObject()
     {
         RaycastHit hit;
@@ -77,11 +75,18 @@ public class Interaction : MonoBehaviour
 
         return false;
     }
+
+    public bool HasItemInHands()
+    {
+        if (hands.transform.childCount > 0)
+            return true;
+
+        return false;
+    }
+
     public void PickItemUp()
     {
         //itemrb.isKinematic = false;
-
-
 
         //Put object in correct position in "hands"
         item.parent = hands;
@@ -110,6 +115,7 @@ public class Interaction : MonoBehaviour
         itemrb.freezeRotation = false;
         itemrb.constraints = RigidbodyConstraints.None;
     }
+
     void Throw()
     {
         Vector3 throwDir = transform.forward + (Vector3.up / 4f);
@@ -117,10 +123,12 @@ public class Interaction : MonoBehaviour
 
         chargeTimer = 0;
     }
+
     public float GetThrowMult()
     {
         return chargeTimer / chargeTimeMax;
     }
+
     void ThrowItem(Vector3 direction, float throwForce)
     {
         DropItem();
