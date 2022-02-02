@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Guard : MonoBehaviour
 {
+    GuardManager guardManager;
     AudioSource audioSrc;
     NavMeshAgent agent;
     Animator anim;
@@ -39,14 +40,15 @@ public class Guard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Get components
+        //Get components      
         audioSrc = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         target = FindObjectOfType<Player>().transform;
+        guardManager = FindObjectOfType<GuardManager>();
 
         //Get limb rigidbodies
-        foreach(Rigidbody rb in GetComponentsInChildren<Rigidbody>())
+        foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
         {
             if (!limbs.Contains(rb)) limbs.Add(rb);
 
@@ -105,6 +107,7 @@ public class Guard : MonoBehaviour
                 if (agent.remainingDistance < 0.25f)
                 {
                     //Get next position
+                    SetTargetDestination(guardManager.GetRandomWaypoint());
                 }
             }
             else //Try to attack
