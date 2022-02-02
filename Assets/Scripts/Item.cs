@@ -8,7 +8,7 @@ public class Item : MonoBehaviour
     public float maxForceToDMG = 20f;
     public float maxDMG = 50f;
     public float minDMG = 20f;
-    TempHealth hp;
+    Guard hp;
     void Start()
     {
 
@@ -25,20 +25,19 @@ public class Item : MonoBehaviour
 
         if (collision.gameObject.tag == "enemy")
         {
-            Debug.Log("Took damage :D");
-            hp = collision.gameObject.GetComponent<TempHealth>();
+            hp = collision.gameObject.GetComponent<Guard>();
 
             if (collision.relativeVelocity.magnitude > maxForceToDMG)
             {
                 hp.health -= maxDMG;
+                Debug.Log("Took a lot of damage");
             }
             else if (collision.relativeVelocity.magnitude > minForceToDMG)
             {
                 hp.health -= minDMG;
+                Debug.Log("Took some damage");
             }
         }
-        Debug.Log(collision.relativeVelocity.magnitude);
     }
-
 }
 

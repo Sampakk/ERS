@@ -698,7 +698,7 @@ GameObject:
   - component: {fileID: 711468122281118895}
   m_Layer: 0
   m_Name: Guard
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -897,6 +897,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   isAlive: 1
+  health: 50
 --- !u!54 &9056745005170727555
 Rigidbody:
   m_ObjectHideFlags: 0

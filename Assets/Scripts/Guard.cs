@@ -36,6 +36,8 @@ public class Guard : MonoBehaviour
     bool isChasing;
     public bool isAlive = true;
     Transform target;
+
+    public float health = 50f;
     
     // Start is called before the first frame update
     void Start()
@@ -118,6 +120,10 @@ public class Guard : MonoBehaviour
                     Attack();
                 }
             }
+        }
+        if (health <= 0f)
+        {
+            Die();
         }
     }
 
