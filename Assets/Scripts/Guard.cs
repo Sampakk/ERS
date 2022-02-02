@@ -28,6 +28,7 @@ public class Guard : MonoBehaviour
     public float spotInterval = 0.5f;
     public float spotRadius = 5f;
     public LayerMask playerMask;
+    public LayerMask spottingMask;
     float lastTimeSpotted;
 
     bool attacking;
@@ -137,7 +138,7 @@ public class Guard : MonoBehaviour
         Vector3 direction = (targetPos - checkPos).normalized;
 
         RaycastHit hit;
-        if (Physics.Raycast(checkPos, direction, out hit, Mathf.Infinity, playerMask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(checkPos, direction, out hit, Mathf.Infinity, spottingMask, QueryTriggerInteraction.Ignore))
         {
             Player player = hit.collider.GetComponent<Player>();
 

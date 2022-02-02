@@ -889,8 +889,11 @@ MonoBehaviour:
   attackDelay: 0.5
   attackRange: 1
   spotInterval: 0.5
-  spotRadius: 10
+  spotRadius: 15
   playerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  spottingMask:
     serializedVersion: 2
     m_Bits: 65
   isAlive: 1
