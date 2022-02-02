@@ -18,10 +18,13 @@ public class Guard : MonoBehaviour
     public AudioClip hurtSound;
     public AudioClip dieSound;
 
-    [Header("Stats")]
-    public float speed = 5f;
-    public float slowSpeed = 3f;
+    [Header("Movement")]
+    public float walkSpeed = 4f;
+    public float runSpeed = 7f;
+    public float slowedSpeed = 2f;
     public float angularSpeed = 360f;
+
+    [Header("Attacking")]
     public float damage = 20f;
     public float attackDelay = 0.5f;
     public float attackRange = 1f;
@@ -74,7 +77,7 @@ public class Guard : MonoBehaviour
         }
 
         //Setup stats for agent
-        agent.speed = speed;
+        agent.speed = walkSpeed;
         agent.angularSpeed = angularSpeed;
     }
 
@@ -82,10 +85,7 @@ public class Guard : MonoBehaviour
     void Update()
     {
         if (isAlive)
-        {
-            //Update animations
-            anim.SetBool("Moving", IsMoving());
-
+        {           
             //Try to spot
             if (Time.time >= lastTimeSpotted + spotInterval)
             {
@@ -98,13 +98,19 @@ public class Guard : MonoBehaviour
                     if (CanSeePlayer())
                     {
                         isChasing = true;
+                        agent.speed = runSpeed;
                         SetTargetDestination(target.position);
+                    }
+                    else
+                    {
+                        agent.speed = walkSpeed;
                     }
                 }
                 else
                 {
                     isChasing = false;
-                }                    
+                    agent.speed = walkSpeed;
+                }
             }
 
             //Get next waypoint if not chasing player
@@ -129,6 +135,10 @@ public class Guard : MonoBehaviour
                     Attack();
                 }
             }
+
+            //Update animations
+            anim.SetBool("Moving", IsMoving());
+            anim.SetBool("Chasing", isChasing);
         }
 
         if (health <= 0f)
@@ -203,7 +213,7 @@ public class Guard : MonoBehaviour
         yield return new WaitForSeconds(attackDelay / 2);
 
         //Continue movement
-        agent.speed = speed;
+        agent.speed = runSpeed;
         attacking = false;
     }
 
@@ -237,12 +247,14 @@ public class Guard : MonoBehaviour
 
     IEnumerator ResetWalk(float delay)
     {
-        agent.speed = slowSpeed;
+        agent.speed = slowedSpeed;
         anim.SetBool("Slowed", true);
 
         yield return new WaitForSeconds(delay);
 
-        agent.speed = speed;
+        agent.speed = (isChasing) ? runSpeed : walkSpeed;
+
+        anim.SetBool("Chasing", isChasing);
         anim.SetBool("Slowed", false);
     }
 
