@@ -5,7 +5,6 @@ public class Item : MonoBehaviour
 {
     public float minForceToDMG = 10f;
     public float maxForceToDMG = 20f;
-    public bool isBigObject = true;
     Guard guard;
     public enum WeaponType {Light, Medium, Heavy}
     public WeaponType type;
