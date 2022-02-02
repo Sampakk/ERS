@@ -38,6 +38,7 @@ public class Guard : MonoBehaviour
 
     bool attacking;
     bool isChasing;
+    bool isSlowed;
     public bool isAlive = true;
     Transform target;
 
@@ -86,7 +87,7 @@ public class Guard : MonoBehaviour
     {
         if (isAlive)
         {           
-            //Try to spot
+            //Try to spot, update animations & speed
             if (Time.time >= lastTimeSpotted + spotInterval)
             {
                 lastTimeSpotted = Time.time;
@@ -103,13 +104,27 @@ public class Guard : MonoBehaviour
                     }
                     else
                     {
-                        agent.speed = walkSpeed;
+                        isChasing = false;
                     }
                 }
                 else
                 {
                     isChasing = false;
-                    agent.speed = walkSpeed;
+                }
+
+                //Update animations
+                anim.SetBool("Moving", IsMoving());
+                anim.SetBool("Chasing", IsChasing());
+
+                //Update speed
+                if (isSlowed)
+                {
+                    agent.speed = slowedSpeed;
+                }
+                else
+                {
+                    if (isChasing) agent.speed = runSpeed;
+                    else agent.speed = walkSpeed;
                 }
             }
 
@@ -122,8 +137,6 @@ public class Guard : MonoBehaviour
                     if (waypointIndex == waypoints.Count - 1) waypointIndex = 0;
                     else waypointIndex++;
 
-                    Debug.Log("Waypoint: " + waypoints[waypointIndex]);
-
                     SetTargetDestination(waypoints[waypointIndex].position);
                 }
             }
@@ -134,14 +147,10 @@ public class Guard : MonoBehaviour
                 {
                     Attack();
                 }
-            }
-
-            //Update animations
-            anim.SetBool("Moving", IsMoving());
-            anim.SetBool("Chasing", isChasing);
+            }         
         }
 
-        if (health <= 0f)
+        if (isAlive && health <= 0)
         {
             Die();
         }
@@ -247,6 +256,7 @@ public class Guard : MonoBehaviour
 
     IEnumerator ResetWalk(float delay)
     {
+        isSlowed = true;
         agent.speed = slowedSpeed;
         anim.SetBool("Slowed", true);
 
@@ -254,6 +264,7 @@ public class Guard : MonoBehaviour
 
         agent.speed = (isChasing) ? runSpeed : walkSpeed;
 
+        isSlowed = false;
         anim.SetBool("Chasing", isChasing);
         anim.SetBool("Slowed", false);
     }

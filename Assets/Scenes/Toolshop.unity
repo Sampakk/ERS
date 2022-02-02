@@ -264,7 +264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minForceToDMG: 10
   maxForceToDMG: 20
-  type: 2
+  type: 0
 --- !u!54 &403657285
 Rigidbody:
   m_ObjectHideFlags: 0
