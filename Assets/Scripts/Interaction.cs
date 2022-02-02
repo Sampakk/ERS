@@ -118,7 +118,7 @@ public class Interaction : MonoBehaviour
 
     void Throw()
     {
-        Vector3 throwDir = transform.forward + (Vector3.up / 4f);
+        Vector3 throwDir = hands.forward + (Vector3.up / 4f);
         ThrowItem(throwDir, throwForce * GetThrowMult());
 
         chargeTimer = 0;
