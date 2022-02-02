@@ -37,4 +37,9 @@ public class CameraRotator : MonoBehaviour
         //transform.rotation = Quaternion.Euler(localEulers);
 
     }
+
+    /*Sitte tänne alle if lauseilla pelaajan havainnointi ja Kameran valon värimuutos (aika katkaisu takaisin "normaali" tilaan.
+     Jos kamera huomaa pelaajan se myös ilmoittaa vartijoille pelaajan paikan ja hälyttää ne kameran lokaatioon (tyhjä gameobjecti maassa).
+    Kameran olisi tarkoitus myös seurata pelaajaa (lock on target)*/
+
 }
