@@ -113,21 +113,42 @@ public class Player : MonoBehaviour
         rb.velocity = horizontalVelocity;
     }
 
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Camera"))
+        {
+            SecurityCamera securityCam = collider.GetComponentInParent<SecurityCamera>();
+            securityCam.SetTarget(transform);
+        }
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Camera"))
+        {
+            SecurityCamera securityCam = collider.GetComponentInParent<SecurityCamera>();
+            securityCam.SetTarget(null);
+        }
+    }
+
     bool IsGrounded()
     {
         if (Physics.CheckSphere(groundCheck.position, groundDistance, groundMask)) return true;
         return false;
     }
+
     bool IsUnder()
     {
         if (Physics.CheckSphere(ceilingCheck.position, ceilingDistance, groundMask)) return true;
         return false;
     }
+
     void Crouch()
     {
         col.height = crouchHeight;
         //groundCheck.position = groundCheck.position + new Vector3(0,0.5f,0);
     }
+
     void StandUp()
     {   
         if (IsUnder() == false)
@@ -136,6 +157,7 @@ public class Player : MonoBehaviour
             //groundCheck.position = groundCheck.position + new Vector3(0, -0.5f, 0);
         }
     }
+
     bool CanStandUp()
     {
         if (Input.GetKeyDown(KeyCode.LeftControl)) return false;

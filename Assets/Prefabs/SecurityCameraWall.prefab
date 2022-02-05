@@ -41,7 +41,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7744190742795792288}
-  - component: {fileID: 7744190742795792303}
   m_Layer: 0
   m_Name: PivotPoint
   m_TagString: Untagged
@@ -65,21 +64,6 @@ Transform:
   m_Father: {fileID: 7744190742597213824}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7744190742795792303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7744190742795792289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b3d3ddd29352a8499e015d5bf707d13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  angle: 90
-  speed: 0.5
 --- !u!1001 &7744190742080247743
 PrefabInstance:
   m_ObjectHideFlags: 0
