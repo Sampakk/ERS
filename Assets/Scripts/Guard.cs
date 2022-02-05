@@ -178,8 +178,11 @@ public class Guard : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(checkPos, direction, out hit, Mathf.Infinity, spottingMask, QueryTriggerInteraction.Ignore))
         {
+            //Try to get player component so we know did we see it
             Player player = hit.collider.GetComponent<Player>();
+            if (player == null) player = hit.collider.GetComponentInParent<Player>();
 
+            //Return true or false
             if (player != null) return true;
             else return false;
         }
