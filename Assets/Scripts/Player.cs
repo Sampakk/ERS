@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     CapsuleCollider col;
 
     [Header("Movement")]
-    float moveSpeedMultiplier = 1f;
     public float walkSpeed = 4f;
     public float sprintSpeed = 8f;
     public float jumpHeight = 3f;
@@ -26,7 +25,8 @@ public class Player : MonoBehaviour
 
     [Header("Mouselook")]
     public float mouseSensitivity = 2f;
-
+    
+    float moveSpeedMultiplier = 1f;
     float moveX, moveZ;
     float moveSpeed;
     float mouseX, mouseY;
@@ -91,10 +91,11 @@ public class Player : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
 
         //Crouching
-        if (Input.GetKeyDown(KeyCode.LeftControl)) Crouch();
+        if (Input.GetKey(KeyCode.LeftControl)) Crouch();
         else if (Input.GetKeyUp(KeyCode.LeftControl)) StandUp();
+        else if (CanStandUp() == true) StandUp();
 
-        Debug.Log(IsUnder());
+        Debug.Log(CanStandUp());
     }
 
     void FixedUpdate()
@@ -134,5 +135,10 @@ public class Player : MonoBehaviour
             col.height = originalHeight;
             //groundCheck.position = groundCheck.position + new Vector3(0, -0.5f, 0);
         }
+    }
+    bool CanStandUp()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl)) return false;
+        return true;
     }
 }
