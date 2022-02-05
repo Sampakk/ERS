@@ -16,12 +16,15 @@ public class SecurityCamera : MonoBehaviour
     Transform target;
     Vector3 startEulers;
     Color normalLightColor;
+    float lightIntensity;
 
     // Start is called before the first frame update
     void Start()
     {
+        //Setup values
         startEulers = pivotPoint.localEulerAngles;
         normalLightColor = cameraLight.color;
+        lightIntensity = cameraLight.intensity;
     }
 
     // Update is called once per frame
@@ -39,25 +42,27 @@ public class SecurityCamera : MonoBehaviour
         {
             //Camera looks towards player position
             Vector3 direction = target.position - pivotPoint.position;
-            pivotPoint.localRotation = Quaternion.LookRotation(direction, pivotPoint.up);
+            Quaternion lookRotation = Quaternion.LookRotation(direction, pivotPoint.up);
 
             //Clamp rotation so its limited by angle
-            float cameraAngle = pivotPoint.localEulerAngles.y;
+            float cameraAngle = lookRotation.eulerAngles.y;
             float clampedAngle = ClampAngle(cameraAngle, -(angle / 2), angle / 2);
 
-            //Apply only rotation on y axis
+            //Apply rotation only on y axis and then slerp to target rotation
             Vector3 clampedEulers = new Vector3(0, clampedAngle, 0);
-            pivotPoint.localRotation = Quaternion.Euler(clampedEulers);
-
-            return;
+            Quaternion rotation = Quaternion.Euler(clampedEulers);
+            pivotPoint.localRotation = Quaternion.Slerp(pivotPoint.localRotation, rotation, 2f * Time.deltaTime);
         }
+        else
+        {
+            //Add rotation
+            Vector3 localEulers = startEulers;
+            localEulers.y += Mathf.Sin(Time.time * speed) * (angle / 2);
 
-        //Rotating camera when no target
-        Vector3 localEulers = startEulers;
-        localEulers.y += Mathf.Sin(Time.time * speed) * (angle / 2);
-
-        Quaternion rotation = Quaternion.Euler(localEulers);
-        pivotPoint.localRotation = rotation;
+            //Slerp to target rotation
+            Quaternion rotation = Quaternion.Euler(localEulers);
+            pivotPoint.localRotation = Quaternion.Slerp(pivotPoint.localRotation, rotation, 2f * Time.deltaTime);
+        }  
     }
 
     void CameraLights()
@@ -65,12 +70,18 @@ public class SecurityCamera : MonoBehaviour
         if (target == null)
         {
             if (cameraLight.color != normalLightColor)
+            {
                 cameraLight.color = normalLightColor;
+                cameraLight.intensity = lightIntensity;
+            }               
         }
         else
         {
             if (cameraLight.color == normalLightColor)
+            {
                 cameraLight.color = Color.red;
+                cameraLight.intensity = lightIntensity * 2f;
+            }              
         }
     }
 
