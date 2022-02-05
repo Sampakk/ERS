@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     Transform cam;
     Interaction interact;
     CapsuleCollider col;
+    CapsuleCollider wallCol;
 
     [Header("Movement")]
     public float walkSpeed = 4f;
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         col = GetComponent<CapsuleCollider>();
+        wallCol = transform.GetChild(0).GetComponent<CapsuleCollider>();
         originalHeight = col.height;
         groundCheckHeight = groundCheck.position.y;
     }
@@ -95,7 +97,6 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.LeftControl)) StandUp();
         else if (CanStandUp() == true) StandUp();
 
-        Debug.Log(CanStandUp());
     }
 
     void FixedUpdate()
@@ -146,6 +147,7 @@ public class Player : MonoBehaviour
     void Crouch()
     {
         col.height = crouchHeight;
+        wallCol.height = crouchHeight;
         //groundCheck.position = groundCheck.position + new Vector3(0,0.5f,0);
     }
 
@@ -154,6 +156,7 @@ public class Player : MonoBehaviour
         if (IsUnder() == false)
         {
             col.height = originalHeight;
+            wallCol.height = originalHeight;
             //groundCheck.position = groundCheck.position + new Vector3(0, -0.5f, 0);
         }
     }
