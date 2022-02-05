@@ -6,17 +6,23 @@ public class Player : MonoBehaviour
 {
     Rigidbody rb;
     Transform cam;
+    Interaction interact;
+    CapsuleCollider col;
 
     [Header("Movement")]
     float moveSpeedMultiplier = 1f;
     public float walkSpeed = 4f;
     public float sprintSpeed = 8f;
     public float jumpHeight = 3f;
+    public float crouchHeight;
 
     [Header("Ground check")]
     public Transform groundCheck;
     public float groundDistance = 0.45f;
     public LayerMask groundMask;
+    public Transform ceilingCheck;
+    public float ceilingDistance = 0.45f;
+
 
     [Header("Mouselook")]
     public float mouseSensitivity = 2f;
@@ -25,9 +31,8 @@ public class Player : MonoBehaviour
     float moveSpeed;
     float mouseX, mouseY;
     float xRotation = 0f;
-
-    Interaction interact;
-    Item throwable;
+    float originalHeight;
+    float groundCheckHeight;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +43,10 @@ public class Player : MonoBehaviour
 
         //Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
+
+        col = GetComponent<CapsuleCollider>();
+        originalHeight = col.height;
+        groundCheckHeight = groundCheck.position.y;
     }
 
     // Update is called once per frame
@@ -47,8 +56,6 @@ public class Player : MonoBehaviour
             moveSpeedMultiplier = interact.GetItemInHands().MoveSpeedMultiplier();
         else 
             moveSpeedMultiplier = 1f;
-        
-        Debug.Log(moveSpeedMultiplier);
 
         //Get input
         moveX = Input.GetAxis("Horizontal");
@@ -82,6 +89,12 @@ public class Player : MonoBehaviour
 
         //Rotate player horizontally
         transform.Rotate(Vector3.up * mouseX);
+
+        //Crouching
+        if (Input.GetKeyDown(KeyCode.LeftControl)) Crouch();
+        else if (Input.GetKeyUp(KeyCode.LeftControl)) StandUp();
+
+        Debug.Log(IsUnder());
     }
 
     void FixedUpdate()
@@ -103,5 +116,23 @@ public class Player : MonoBehaviour
     {
         if (Physics.CheckSphere(groundCheck.position, groundDistance, groundMask)) return true;
         return false;
+    }
+    bool IsUnder()
+    {
+        if (Physics.CheckSphere(ceilingCheck.position, ceilingDistance, groundMask)) return true;
+        return false;
+    }
+    void Crouch()
+    {
+        col.height = crouchHeight;
+        //groundCheck.position = groundCheck.position + new Vector3(0,0.5f,0);
+    }
+    void StandUp()
+    {   
+        if (IsUnder() == false)
+        {
+            col.height = originalHeight;
+            //groundCheck.position = groundCheck.position + new Vector3(0, -0.5f, 0);
+        }
     }
 }
