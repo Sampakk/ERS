@@ -1111,11 +1111,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2ef2bb8792f82245bb0452712967006, type: 3}
---- !u!4 &1529506117 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8390853728582807494, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
-  m_PrefabInstance: {fileID: 8390853728463150386}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1537772625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,50 +1682,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
---- !u!1 &1875029741
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1875029742}
-  - component: {fileID: 1875029743}
-  m_Layer: 6
-  m_Name: CeilingCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1875029742
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875029741}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.579, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1529506117}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1875029743
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875029741}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2042659772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1841,14 +1792,6 @@ PrefabInstance:
       propertyPath: hands
       value: 
       objectReference: {fileID: 1797729074}
-    - target: {fileID: 8390853728582807489, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
-      propertyPath: ceilingCheck
-      value: 
-      objectReference: {fileID: 1875029742}
-    - target: {fileID: 8390853728582807489, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
-      propertyPath: crouchHeight
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8390853728582807494, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
       propertyPath: m_RootOrder
       value: 2

@@ -16,8 +16,9 @@ public class GuardManager : MonoBehaviour
         if (Application.isPlaying)
         {
             //Instantiate guards to scene on start, each at the start of their own path
-            foreach (Transform path in paths)
+            for (int i = 0; i < paths.Length; i++)
             {
+                Transform path = paths[i];
                 SpawnGuardOnPath(path);
             }
         }

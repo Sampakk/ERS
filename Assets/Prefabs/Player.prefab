@@ -30,6 +30,50 @@ Transform:
   m_Father: {fileID: 8390853728114544386}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &827948337127460459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7811136739288468083}
+  - component: {fileID: 5612154790624101901}
+  m_Layer: 6
+  m_Name: CeilingCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7811136739288468083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827948337127460459}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.579, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8390853728582807494}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &5612154790624101901
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827948337127460459}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8390853726981614166
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +235,7 @@ Transform:
   m_Children:
   - {fileID: 8390853728114544386}
   - {fileID: 8390853726981614167}
+  - {fileID: 7811136739288468083}
   - {fileID: 5300290117693474867}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -237,16 +282,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30bbbcfacd4868540a2d859169f7318f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 8390853728114544386}
-  hands: {fileID: 0}
   walkSpeed: 5
   sprintSpeed: 8
   jumpHeight: 5
+  crouchHeight: 1
   groundCheck: {fileID: 8390853726981614167}
   groundDistance: 0.45
   groundMask:
     serializedVersion: 2
     m_Bits: 1
+  ceilingCheck: {fileID: 7811136739288468083}
+  ceilingDistance: 0.45
   mouseSensitivity: 2
 --- !u!114 &1504509271
 MonoBehaviour:
@@ -274,7 +320,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3165126430658078193, guid: edad97d133b4135469a71865771805f7, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3165126430658078193, guid: edad97d133b4135469a71865771805f7, type: 3}
       propertyPath: m_LocalPosition.x

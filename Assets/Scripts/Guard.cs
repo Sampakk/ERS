@@ -46,11 +46,11 @@ public class Guard : MonoBehaviour
     int waypointIndex;
 
     public float health = 50f;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        //Get components      
+        //Get components
         audioSrc = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
@@ -189,6 +189,9 @@ public class Guard : MonoBehaviour
 
     public void SetupPath(Transform path)
     {
+        if (agent == null)
+            agent = GetComponent<NavMeshAgent>();
+
         foreach(Transform waypoint in path)
         {
             waypoints.Add(waypoint);
