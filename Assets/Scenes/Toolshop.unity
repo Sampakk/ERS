@@ -160,6 +160,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6923715503064349232, guid: f35d9b46689b6614b923e20e1aad7f9a, type: 3}
+      propertyPath: m_Name
+      value: CameraLight
+      objectReference: {fileID: 0}
     - target: {fileID: 7474160785728569445, guid: f35d9b46689b6614b923e20e1aad7f9a, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -556,6 +560,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GuardManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5016625693312223863, guid: c1067346061e1b54c96cf6447a0e3633, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5016625693312223864, guid: c1067346061e1b54c96cf6447a0e3633, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -721,47 +729,6 @@ Transform:
   m_Father: {fileID: 1781824810}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1282564944 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9087519900035703430, guid: f35d9b46689b6614b923e20e1aad7f9a, type: 3}
-  m_PrefabInstance: {fileID: 388264007}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &1282564945
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282564944}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3613567641014311022, guid: fb12935a9eb50834cbe39800c0ddb9b2, type: 3}
---- !u!1 &1360535026 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7744190742597213825, guid: f35d9b46689b6614b923e20e1aad7f9a, type: 3}
-  m_PrefabInstance: {fileID: 388264007}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1360535027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360535026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4958f2f2d1aa9dc48abc9d3c8ec1bfc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pivotPoint: {fileID: 2005649752}
-  angle: 90
-  speed: 0.5
-  cameraLight: {fileID: 0}
-  viewCone: {fileID: 0}
 --- !u!1 &1389457339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,11 +1037,6 @@ Transform:
   m_Father: {fileID: 526247195}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2005649752 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7744190742795792288, guid: f35d9b46689b6614b923e20e1aad7f9a, type: 3}
-  m_PrefabInstance: {fileID: 388264007}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2033559783
 PrefabInstance:
   m_ObjectHideFlags: 0
