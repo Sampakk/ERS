@@ -881,6 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493d877ac29087c4d849891ecfd27350, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bonkSound: {fileID: 8300000, guid: b58249292d46d5d42890539dc8b40f6a, type: 3}
   hurtSound: {fileID: 0}
   dieSound: {fileID: 0}
   chaseSounds:

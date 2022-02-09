@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     public float sprintSpeed = 8f;
     public float jumpHeight = 3f;
     public float crouchHeight;
-    bool iscrouched = false;
+    bool isCrouched;
 
     [Header("Ground check")]
     public Transform groundCheck;
@@ -65,11 +65,17 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (interact.HasItemInHands())
-            moveSpeedMultiplier = interact.GetItemInHands().MoveSpeedMultiplier();
-        else 
-            moveSpeedMultiplier = 1f;
-
+        if (interact.HasItemInHands()) //Carrying item
+        {
+            if (isCrouched) moveSpeedMultiplier = 0.5f;
+            else moveSpeedMultiplier = interact.GetItemInHands().MoveSpeedMultiplier();
+        }
+        else //Free hands
+        {
+            if (isCrouched) moveSpeedMultiplier = 0.5f;
+            else moveSpeedMultiplier = 1f;
+        }
+            
         //Get input
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical");
@@ -107,7 +113,7 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl))
         {
             Crouch();
-            iscrouched = true;
+            isCrouched = true;
 
         }
         else if (Input.GetKeyUp(KeyCode.LeftControl))
@@ -117,7 +123,7 @@ public class Player : MonoBehaviour
         else if (CanStandUp() == true)
         {
             StandUp();
-            iscrouched = false;
+            isCrouched = false;
         }
     }
 
@@ -210,27 +216,27 @@ public class Player : MonoBehaviour
         Debug.Log(vel.magnitude);
 
          //sprint footsteps
-        if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !iscrouched)
+        if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !isCrouched)
         {
-            audioSource.volume = 1f;
+            audioSource.volume = 0.4f;
             audioSource.Play();
-            TimeToNextFootsteps = 0.25f;
+            TimeToNextFootsteps = 0.3f;
         }
 
         //walking footsteps
-        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && !iscrouched)
+        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && !isCrouched)
         {
-            audioSource.volume = 0.5f;
+            audioSource.volume = 0.3f;
             audioSource.Play();
             TimeToNextFootsteps = 0.5f;
         }
 
         //crouched footsteps
-        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && iscrouched)
+        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && isCrouched)
         {
             audioSource.volume = 0.25f;
             audioSource.Play();
-            TimeToNextFootsteps = 1f;
+            TimeToNextFootsteps = 0.75f;
         }
     }
 }

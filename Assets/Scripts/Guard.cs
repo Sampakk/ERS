@@ -13,7 +13,8 @@ public class Guard : MonoBehaviour
     List<Collider> cols = new List<Collider>();
     Collider myCol;
 
-    [Header("Audio")]   
+    [Header("Audio")]
+    public AudioClip bonkSound;
     public AudioClip hurtSound;
     public AudioClip dieSound;
 
@@ -191,7 +192,7 @@ public class Guard : MonoBehaviour
 
                 //Play audio
                 int random = Random.Range(0, footsteps.Length);
-                audioSrc.PlayOneShot(footsteps[random]);
+                audioSrc.PlayOneShot(footsteps[random], 0.5f);
             }
         }
     }
@@ -274,14 +275,12 @@ public class Guard : MonoBehaviour
 
     public void PlayHurtAudio(bool die)
     {
-        if (die)
-        {
-            audioSrc.PlayOneShot(dieSound);
-        }
-        else
-        {
-            audioSrc.PlayOneShot(hurtSound);
-        }
+        //Hurt or death
+        if (die) audioSrc.PlayOneShot(dieSound);
+        else audioSrc.PlayOneShot(hurtSound);
+
+        //Bonk!
+        audioSrc.PlayOneShot(bonkSound);
     }
 
     public void PlayChaseAudio()
@@ -298,12 +297,16 @@ public class Guard : MonoBehaviour
         agent.enabled = false;
         myCol.enabled = false;
 
+        PlayHurtAudio(true);
+
         EnableRagdoll();
     }
 
     public void Slowdown(float duration)
     {
         StartCoroutine(ResetWalk(duration));
+
+        PlayHurtAudio(true);
     }
 
     IEnumerator ResetWalk(float delay)
