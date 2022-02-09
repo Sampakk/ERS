@@ -36,6 +36,9 @@ public class Player : MonoBehaviour
     float originalHeight;
     float groundCheckHeight;
 
+    [Header("Alerting")]
+    public AudioClip[] alertSounds;
+
     [Header("Footsteps")]
     public AudioClip footsteps;
     AudioSource audioSource;
@@ -145,6 +148,10 @@ public class Player : MonoBehaviour
 
             //Update hud
             hud.SetStatusText(1);
+
+            //Play eesti
+            int random = Random.Range(0, alertSounds.Length);
+            audioSource.PlayOneShot(alertSounds[random]);
         }
     }
 
