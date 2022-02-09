@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    HUD hud;
     Rigidbody rb;
     Transform cam;
     Interaction interact;
@@ -23,7 +24,6 @@ public class Player : MonoBehaviour
     public LayerMask groundMask;
     public Transform ceilingCheck;
     public float ceilingDistance = 0.45f;
-
 
     [Header("Mouselook")]
     public float mouseSensitivity = 2f;
@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>().transform;
         interact = GetComponent<Interaction>();
+        hud = FindObjectOfType<HUD>();
 
         //Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -75,7 +76,7 @@ public class Player : MonoBehaviour
             //Apply walk speed
             moveSpeed = walkSpeed * moveSpeedMultiplier;        
 
-            if (interact.HasItemInHands() != true)
+            if (!interact.HasItemInHands())
             {
                 //Override to run speed
                 if (Input.GetKey(KeyCode.LeftShift) && moveZ > 0)
@@ -115,14 +116,11 @@ public class Player : MonoBehaviour
             StandUp();
             iscrouched = false;
         }
-
     }
 
     void FixedUpdate()
     {
-
         Footsteps();
-
 
         //Get move direction
         Vector3 moveDir = transform.right * moveX + transform.forward * moveZ;
@@ -135,26 +133,31 @@ public class Player : MonoBehaviour
         float verticalVelocity = Mathf.Clamp(rb.velocity.y, float.MinValue, jumpHeight);
         Vector3 horizontalVelocity = new Vector3(moveDir.x * moveSpeed, verticalVelocity, moveDir.z * moveSpeed);
         rb.velocity = horizontalVelocity;
-
-
-       
     }
 
     void OnTriggerEnter(Collider collider)
     {
+        //Alert guards
         if (collider.gameObject.layer == LayerMask.NameToLayer("Camera"))
         {
             SecurityCamera securityCam = collider.GetComponentInParent<SecurityCamera>();
             securityCam.SetTarget(transform);
+
+            //Update hud
+            hud.SetStatusText(1);
         }
     }
 
     void OnTriggerExit(Collider collider)
     {
+        //Leaves security cam
         if (collider.gameObject.layer == LayerMask.NameToLayer("Camera"))
         {
             SecurityCamera securityCam = collider.GetComponentInParent<SecurityCamera>();
             securityCam.SetTarget(null);
+
+            //Update hud
+            hud.SetStatusText(0);
         }
     }
 
@@ -168,6 +171,12 @@ public class Player : MonoBehaviour
     {
         if (Physics.CheckSphere(ceilingCheck.position, ceilingDistance, groundMask)) return true;
         return false;
+    }
+
+    bool CanStandUp()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl)) return false;
+        return true;
     }
 
     void Crouch()
@@ -187,12 +196,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    bool CanStandUp()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftControl)) return false;
-        return true;
-    }
-
     void Footsteps()
     {
         TimeToNextFootsteps = TimeToNextFootsteps - Time.deltaTime;
@@ -202,11 +205,9 @@ public class Player : MonoBehaviour
          //sprint footsteps
         if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !iscrouched)
         {
-
             audioSource.volume = 1f;
             audioSource.Play();
             TimeToNextFootsteps = 0.25f;
-
         }
 
         //walking footsteps
@@ -224,7 +225,5 @@ public class Player : MonoBehaviour
             audioSource.Play();
             TimeToNextFootsteps = 1f;
         }
-
-       
     }
 }

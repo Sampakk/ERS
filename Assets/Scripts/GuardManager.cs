@@ -10,6 +10,8 @@ public class GuardManager : MonoBehaviour
     [Header("Paths")]
     public Transform[] paths;
 
+    List<Guard> guards = new List<Guard>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,21 @@ public class GuardManager : MonoBehaviour
     {
         GameObject guard = Instantiate(guardPrefab, path.GetChild(0).position, Quaternion.identity);
         guard.GetComponent<Guard>().SetupPath(path);
+
+        //Add to list
+        guards.Add(guard.GetComponent<Guard>());
+    }
+
+    public bool IsPlayerChased()
+    {
+        bool chased = false;
+        foreach(Guard guard in guards)
+        {
+            if (guard.IsChasing())
+                chased = true;
+        }
+
+        return chased;
     }
 
     void OnDrawGizmos()

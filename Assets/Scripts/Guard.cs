@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Guard : MonoBehaviour
 {
-    GuardManager guardManager;
     AudioSource audioSrc;
     NavMeshAgent agent;
     Animator anim;
@@ -55,7 +54,6 @@ public class Guard : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         target = FindObjectOfType<Player>().transform;
-        guardManager = FindObjectOfType<GuardManager>();
 
         //Get limb rigidbodies
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
