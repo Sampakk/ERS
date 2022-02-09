@@ -295,6 +295,7 @@ MonoBehaviour:
   ceilingCheck: {fileID: 7811136739288468083}
   ceilingDistance: 0.45
   mouseSensitivity: 2
+  footsteps: {fileID: 8300000, guid: 2e57a05b315d0e049a81044ee99eb3f8, type: 3}
 --- !u!114 &1504509271
 MonoBehaviour:
   m_ObjectHideFlags: 0
