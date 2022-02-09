@@ -202,8 +202,9 @@ public class Player : MonoBehaviour
          //sprint footsteps
         if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !iscrouched)
         {
-            audioSource.Play();
 
+            audioSource.volume = 1f;
+            audioSource.Play();
             TimeToNextFootsteps = 0.25f;
 
         }
@@ -211,16 +212,16 @@ public class Player : MonoBehaviour
         //walking footsteps
         else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && !iscrouched)
         {
+            audioSource.volume = 0.5f;
             audioSource.Play();
-
             TimeToNextFootsteps = 0.5f;
         }
 
         //crouched footsteps
         else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && iscrouched)
         {
+            audioSource.volume = 0.25f;
             audioSource.Play();
-
             TimeToNextFootsteps = 1f;
         }
 
