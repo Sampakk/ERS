@@ -13,9 +13,17 @@ public class Guard : MonoBehaviour
     List<Collider> cols = new List<Collider>();
     Collider myCol;
 
-    [Header("Audio")]
+    [Header("Audio")]   
     public AudioClip hurtSound;
     public AudioClip dieSound;
+
+    [Header ("Chasing")]
+    public AudioClip[] chaseSounds;
+
+    [Header("Footsteps")]
+    public AudioClip[] footsteps;
+    public float footstepDelay = 0.4f;
+    float timeToNextFootstep;
 
     [Header("Movement")]
     public float walkSpeed = 4f;
@@ -83,8 +91,15 @@ public class Guard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        AI();
+
+        Footsteps();
+    }
+
+    void AI()
+    {
         if (isAlive)
-        {           
+        {
             //Try to spot, update animations & speed
             if (Time.time >= lastTimeSpotted + spotInterval)
             {
@@ -96,6 +111,11 @@ public class Guard : MonoBehaviour
                 {
                     if (CanSeePlayer())
                     {
+                        //Chase audio
+                        if (!isChasing)
+                            PlayChaseAudio();
+
+                        //Start chasing player, target destination is player position
                         isChasing = true;
                         agent.speed = runSpeed;
                         SetTargetDestination(target.position);
@@ -145,12 +165,34 @@ public class Guard : MonoBehaviour
                 {
                     Attack();
                 }
-            }         
-        }
+            }
 
-        if (isAlive && health <= 0)
+            //Dying
+            if (health <= 0)
+                Die();
+        }   
+    }
+
+    void Footsteps()
+    {
+        if (IsMoving())
         {
-            Die();
+            //Check speed
+            float speedMult = 1f;
+            if (isSlowed) speedMult *= 0.5f;
+            else if (isChasing) speedMult *= 1.2f;
+
+            //Timer
+            timeToNextFootstep -= speedMult * Time.deltaTime;
+
+            if (timeToNextFootstep <= 0)
+            {
+                timeToNextFootstep = footstepDelay;
+
+                //Play audio
+                int random = Random.Range(0, footsteps.Length);
+                audioSrc.PlayOneShot(footsteps[random]);
+            }
         }
     }
 
@@ -240,6 +282,12 @@ public class Guard : MonoBehaviour
         {
             audioSrc.PlayOneShot(hurtSound);
         }
+    }
+
+    public void PlayChaseAudio()
+    {
+        int random = Random.Range(0, chaseSounds.Length);
+        audioSrc.PlayOneShot(chaseSounds[random]);
     }
 
     public void Die()

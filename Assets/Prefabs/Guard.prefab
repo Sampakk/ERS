@@ -794,7 +794,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 25
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -883,6 +883,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hurtSound: {fileID: 0}
   dieSound: {fileID: 0}
+  chaseSounds:
+  - {fileID: 8300000, guid: 18c5763c624459945b2ebc899ae543f5, type: 3}
+  - {fileID: 8300000, guid: 95d916e917a99034499a6682bf746f8f, type: 3}
+  - {fileID: 8300000, guid: a661d31f73c67b645a74521a31d98ad4, type: 3}
+  - {fileID: 8300000, guid: 376d85e84ddf13047bb9ac0167d659f7, type: 3}
+  footsteps:
+  - {fileID: 8300000, guid: 2e57a05b315d0e049a81044ee99eb3f8, type: 3}
+  - {fileID: 8300000, guid: 59c312cad683f4d47b4ab50365c1d1ef, type: 3}
+  - {fileID: 8300000, guid: f5e07b45545a6a646874e043f7c8fa4e, type: 3}
+  footstepDelay: 0.5
   walkSpeed: 3.5
   runSpeed: 8
   slowedSpeed: 1.5
