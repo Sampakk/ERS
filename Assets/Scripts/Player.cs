@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public float sprintSpeed = 8f;
     public float jumpHeight = 3f;
     public float crouchHeight;
+    bool iscrouched = false;
 
     [Header("Ground check")]
     public Transform groundCheck;
@@ -35,9 +36,15 @@ public class Player : MonoBehaviour
     float originalHeight;
     float groundCheckHeight;
 
+    [Header("Footsteps")]
+    public AudioClip footsteps;
+    AudioSource audioSource;
+    float TimeToNextFootsteps = 0.5f;
+
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>().transform;
         interact = GetComponent<Interaction>();
@@ -93,14 +100,30 @@ public class Player : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
 
         //Crouching
-        if (Input.GetKey(KeyCode.LeftControl)) Crouch();
-        else if (Input.GetKeyUp(KeyCode.LeftControl)) StandUp();
-        else if (CanStandUp() == true) StandUp();
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            Crouch();
+            iscrouched = true;
+
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            StandUp();
+        }
+        else if (CanStandUp() == true)
+        {
+            StandUp();
+            iscrouched = false;
+        }
 
     }
 
     void FixedUpdate()
     {
+
+        Footsteps();
+
+
         //Get move direction
         Vector3 moveDir = transform.right * moveX + transform.forward * moveZ;
         moveDir = Vector3.ClampMagnitude(moveDir, 1f);
@@ -112,6 +135,9 @@ public class Player : MonoBehaviour
         float verticalVelocity = Mathf.Clamp(rb.velocity.y, float.MinValue, jumpHeight);
         Vector3 horizontalVelocity = new Vector3(moveDir.x * moveSpeed, verticalVelocity, moveDir.z * moveSpeed);
         rb.velocity = horizontalVelocity;
+
+
+       
     }
 
     void OnTriggerEnter(Collider collider)
@@ -165,5 +191,39 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl)) return false;
         return true;
+    }
+
+    void Footsteps()
+    {
+        TimeToNextFootsteps = TimeToNextFootsteps - Time.deltaTime;
+        Vector3 vel = rb.velocity;
+        Debug.Log(vel.magnitude);
+
+         //sprint footsteps
+        if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !iscrouched)
+        {
+            audioSource.Play();
+
+            TimeToNextFootsteps = 0.25f;
+
+        }
+
+        //walking footsteps
+        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && !iscrouched)
+        {
+            audioSource.Play();
+
+            TimeToNextFootsteps = 0.5f;
+        }
+
+        //crouched footsteps
+        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && iscrouched)
+        {
+            audioSource.Play();
+
+            TimeToNextFootsteps = 1f;
+        }
+
+       
     }
 }
