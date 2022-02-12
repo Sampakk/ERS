@@ -9,11 +9,13 @@ public class HUD : MonoBehaviour
     Player player;
     Interaction interaction;
     GuardManager guardManager;
+    UseMap useMap;
 
     public TextMeshProUGUI statusText;
     public Image  interactIcon;
     public Image throwbar;
     public Image Crosshair;
+    public TextMeshProUGUI useMapText;
 
     // Start is called before the first frame update
     void Start()
@@ -22,16 +24,21 @@ public class HUD : MonoBehaviour
         player = FindObjectOfType<Player>();
         interaction = FindObjectOfType<Interaction>();
         guardManager = FindObjectOfType<GuardManager>();
+        useMap = FindObjectOfType<UseMap>();
 
         interactIcon.enabled = false;
+        useMapText.enabled = false;
         SetStatusText(0);
+
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleInteraction();
-
+        
+        HandleMap();
+        
         HandleThrowbar();
 
         HandleStatus();
@@ -92,6 +99,19 @@ public class HUD : MonoBehaviour
         {
             statusText.text = "Guards chasing!";
             statusText.color = Color.red;
+        }
+    }
+    void HandleMap()
+    {
+        if (useMap.AtBoard())
+        {
+            Crosshair.enabled = false;
+            useMapText.enabled = true;
+        }
+        else
+        {
+            useMapText.enabled = false;
+            Crosshair.enabled = true;
         }
     }
 }
