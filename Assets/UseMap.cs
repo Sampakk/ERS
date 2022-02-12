@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class UseMap : MonoBehaviour
 {
-    public GameObject player;
     public Transform usePosition;
     public Transform cam;
     bool useable = false;
     Rigidbody rb;
+    GameObject player;
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         rb = player.GetComponent<Rigidbody>();
     }
 
@@ -22,7 +23,7 @@ public class UseMap : MonoBehaviour
         {
             UseGameMap();
         }
-        Debug.Log(useable);
+        Debug.Log(AtBoard());
     }
     void OnTriggerEnter(Collider other)
     {
@@ -37,20 +38,29 @@ public class UseMap : MonoBehaviour
         player.transform.parent = usePosition;
         player.transform.localPosition = Vector3.zero;
         player.GetComponent<Player>().enabled = false;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
 
         //Unlock cursor
         Cursor.lockState = CursorLockMode.None;
 
         player.transform.LookAt(gameObject.transform.position);
         cam.localRotation = Quaternion.Euler(-5f,0f,0f);
+        
     }
     public void ExitGameMap()
     {
         player.transform.parent = null;
         player.GetComponent<Player>().enabled = true;
-
+        rb.constraints = ~RigidbodyConstraints.FreezePosition;
+        
         //Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
+        player.transform.rotation.Set(0f, 0f, 0f, 0f);
+    }
+    public bool AtBoard()
+    {
+        if (useable) return true;
+        else return false;
     }
 }
     
