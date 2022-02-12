@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 
 public class UseMap : MonoBehaviour
 {
@@ -61,6 +62,11 @@ public class UseMap : MonoBehaviour
     {
         if (useable) return true;
         else return false;
+    }
+    public void SelectToolShop()
+    {
+        ExitGameMap();
+        EditorSceneManager.LoadScene(1);
     }
 }
     

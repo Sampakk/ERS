@@ -218,7 +218,7 @@ public class Player : MonoBehaviour
     {
         TimeToNextFootsteps = TimeToNextFootsteps - Time.deltaTime;
         Vector3 vel = rb.velocity;
-        Debug.Log(vel.magnitude);
+        
 
          //sprint footsteps
         if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !isCrouched)
