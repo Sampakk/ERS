@@ -680,7 +680,7 @@ MonoBehaviour:
   interactIcon: {fileID: 1878403132978822107}
   throwbar: {fileID: 3165126432247101956}
   Crosshair: {fileID: 3165126431895409130}
-  useMapText: {fileID: 0}
+  useMapText: {fileID: 6591861118678975915}
 --- !u!1 &3165126431019936492
 GameObject:
   m_ObjectHideFlags: 0

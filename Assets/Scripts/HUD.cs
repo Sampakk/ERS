@@ -28,8 +28,8 @@ public class HUD : MonoBehaviour
 
         interactIcon.enabled = false;
         useMapText.enabled = false;
-        SetStatusText(0);
 
+        SetStatusText(0);
     }
 
     // Update is called once per frame
@@ -101,8 +101,12 @@ public class HUD : MonoBehaviour
             statusText.color = Color.red;
         }
     }
+
     void HandleMap()
     {
+        if (useMap == null)
+            return;
+
         if (useMap.AtBoard())
         {
             Crosshair.enabled = false;
