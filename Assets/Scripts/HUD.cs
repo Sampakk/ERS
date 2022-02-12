@@ -72,6 +72,10 @@ public class HUD : MonoBehaviour
 
     void HandleStatus()
     {
+
+        if (guardManager == null)
+            return;
+
         if (guardManager.IsPlayerChased())
         {
             SetStatusText(2);
