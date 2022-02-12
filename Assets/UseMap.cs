@@ -44,7 +44,7 @@ public class UseMap : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         player.transform.LookAt(gameObject.transform.position);
-        cam.localRotation = Quaternion.Euler(-5f,0f,0f);
+        cam.localRotation = Quaternion.Euler(-2f,0f,0f);
         
     }
     public void ExitGameMap()
@@ -55,7 +55,8 @@ public class UseMap : MonoBehaviour
         
         //Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
-        player.transform.rotation.Set(0f, 0f, 0f, 0f);
+        player.transform.rotation = Quaternion.identity;
+        player.transform.rotation = Quaternion.Euler(0f, 180, 0);
     }
     public bool AtBoard()
     {
