@@ -23,7 +23,6 @@ public class UseMap : MonoBehaviour
         {
             UseGameMap();
         }
-        Debug.Log(AtBoard());
     }
     void OnTriggerEnter(Collider other)
     {
