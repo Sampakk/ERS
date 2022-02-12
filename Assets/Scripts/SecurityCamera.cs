@@ -10,29 +10,23 @@ public class SecurityCamera : MonoBehaviour
     public float speed = 0.5f;
 
     [Header("Effects")]
-    public Light cameraLight;
     public MeshRenderer viewCone;
 
     Transform target;
     Vector3 startEulers;
     Color normalLightColor;
-    float lightIntensity;
 
     // Start is called before the first frame update
     void Start()
     {
         //Setup values
         startEulers = pivotPoint.localEulerAngles;
-        normalLightColor = cameraLight.color;
-        lightIntensity = cameraLight.intensity;
     }
 
     // Update is called once per frame
     void Update()
     {
         CameraRotation();
-
-        CameraLights();
     }
 
     void CameraRotation()
@@ -62,26 +56,6 @@ public class SecurityCamera : MonoBehaviour
             //Slerp to target rotation
             Quaternion rotation = Quaternion.Euler(localEulers);
             pivotPoint.localRotation = Quaternion.Slerp(pivotPoint.localRotation, rotation, 2f * Time.deltaTime);
-        }  
-    }
-
-    void CameraLights()
-    {
-        if (target == null)
-        {
-            if (cameraLight.color != normalLightColor)
-            {
-                cameraLight.color = normalLightColor;
-                cameraLight.intensity = lightIntensity;
-            }               
-        }
-        else
-        {
-            if (cameraLight.color == normalLightColor)
-            {
-                cameraLight.color = Color.red;
-                cameraLight.intensity = lightIntensity * 2f;
-            }              
         }
     }
 

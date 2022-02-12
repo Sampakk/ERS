@@ -40,9 +40,11 @@ public class Guard : MonoBehaviour
     [Header("Spotting")]
     public float spotInterval = 0.5f;
     public float spotRadius = 5f;
+    public float chasingDelay = 2f;
     public LayerMask playerMask;
     public LayerMask spottingMask;
     float lastTimeSpotted;
+    float lastTimeChased;
 
     bool attacking;
     bool isChasing;
@@ -107,7 +109,8 @@ public class Guard : MonoBehaviour
                 lastTimeSpotted = Time.time;
 
                 //Check if player is near
-                Vector3 checkPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+                Vector3 localForward = transform.forward.normalized;
+                Vector3 checkPos = new Vector3(transform.position.x + localForward.x * (spotRadius * 0.5f), transform.position.y + 1f, transform.position.z + localForward.z * (spotRadius * 0.5f));
                 if (Physics.CheckSphere(checkPos, spotRadius, playerMask))
                 {
                     if (CanSeePlayer())
@@ -120,15 +123,21 @@ public class Guard : MonoBehaviour
                         isChasing = true;
                         agent.speed = runSpeed;
                         SetTargetDestination(target.position);
+
+                        lastTimeChased = Time.time;
                     }
                     else
                     {
-                        isChasing = false;
+                        //Chase for short duration after player was lost
+                        if (Time.time > lastTimeChased + chasingDelay)
+                            isChasing = false;
                     }
                 }
                 else
                 {
-                    isChasing = false;
+                    //Chase for short duration after player was lost
+                    if (Time.time > lastTimeChased + chasingDelay)
+                        isChasing = false;
                 }
 
                 //Update animations
@@ -214,7 +223,9 @@ public class Guard : MonoBehaviour
     {
         Vector3 checkPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
         Vector3 targetPos = new Vector3(target.position.x, target.position.y + 1f, target.position.z);
-        Vector3 direction = (targetPos - checkPos).normalized;
+        Vector3 direction = (targetPos - checkPos);
+        float distance = direction.magnitude;
+        direction = direction.normalized;
 
         RaycastHit hit;
         if (Physics.Raycast(checkPos, direction, out hit, Mathf.Infinity, spottingMask, QueryTriggerInteraction.Ignore))
@@ -224,8 +235,15 @@ public class Guard : MonoBehaviour
             if (player == null) player = hit.collider.GetComponentInParent<Player>();
 
             //Return true or false
-            if (player != null) return true;
-            else return false;
+            if (player != null)
+            {
+                if (player.IsCrouched() && distance <= spotRadius / 2 * 0.5f) return true;
+                else return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         return false;
@@ -337,5 +355,13 @@ public class Guard : MonoBehaviour
         {
             col.isTrigger = false;
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Vector3 localForward = transform.forward.normalized;
+        Vector3 checkPos = new Vector3(transform.position.x + localForward.x * (spotRadius * 0.5f), transform.position.y + 1f, transform.position.z + localForward.z * (spotRadius * 0.5f));
+
+        Gizmos.DrawWireSphere(checkPos, spotRadius);
     }
 }
