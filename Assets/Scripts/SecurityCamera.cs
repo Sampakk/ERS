@@ -9,8 +9,6 @@ public class SecurityCamera : MonoBehaviour
     public float angle = 90;
     public float speed = 0.5f;
 
-    [Header("Effects")]
-    public MeshRenderer viewCone;
 
     Transform target;
     Vector3 startEulers;
