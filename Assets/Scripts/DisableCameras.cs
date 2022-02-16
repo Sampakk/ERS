@@ -9,6 +9,7 @@ public class DisableCameras : MonoBehaviour
     GameObject[] cameraConeGameObject;
     GameObject[] cameraFeedGameObject;
     GameObject[] TVQuad;
+    bool used = false;
     bool useable = false;
     public Material CCTVDisabled;
     AudioSource Shutoff;
@@ -29,9 +30,10 @@ public class DisableCameras : MonoBehaviour
     void Update()
     {
 
-        if (useable && Input.GetKeyDown(KeyCode.E))
+        if (useable && Input.GetKeyDown(KeyCode.E) && !used)
         {
             Debug.Log("DisableCameras");
+            used = true;
             disableCameras();
         }
 
