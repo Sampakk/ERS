@@ -10,12 +10,14 @@ public class HUD : MonoBehaviour
     Interaction interaction;
     GuardManager guardManager;
     UseMap useMap;
+    Hiace hiace;
 
     public TextMeshProUGUI statusText;
     public Image  interactIcon;
     public Image throwbar;
     public Image Crosshair;
     public TextMeshProUGUI useMapText;
+    public TextMeshProUGUI score;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,8 @@ public class HUD : MonoBehaviour
         interaction = FindObjectOfType<Interaction>();
         guardManager = FindObjectOfType<GuardManager>();
         useMap = FindObjectOfType<UseMap>();
+        hiace = FindObjectOfType<Hiace>();
+
 
         interactIcon.enabled = false;
         useMapText.enabled = false;
@@ -42,6 +46,8 @@ public class HUD : MonoBehaviour
         HandleThrowbar();
 
         HandleStatus();
+
+        AddScore();
     }
 
     void HandleInteraction()
@@ -121,5 +127,9 @@ public class HUD : MonoBehaviour
             useMapText.enabled = false;
             Crosshair.enabled = true;
         }
+    }
+    void AddScore()
+    {
+        score.text = hiace.currentScore.ToString() + "€";
     }
 }

@@ -14,6 +14,8 @@ public class Item : MonoBehaviour
     LayerMask playerMask;
     Guard guard;
 
+    public int itemWorth = 0;
+
     void Start()
     {
         outline = GetComponent<Outline>();
