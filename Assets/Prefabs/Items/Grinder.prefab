@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfea9d6d5ff1ade40a816be1a5cecaf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactSound: {fileID: 8300000, guid: 143bf53e7bfa79f47bc4d8514a68951c, type: 3}
   minForceToDMG: 10
   maxForceToDMG: 20
   type: 1

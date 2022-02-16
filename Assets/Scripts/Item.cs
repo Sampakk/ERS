@@ -6,6 +6,11 @@ public class Item : MonoBehaviour
 {
     Outline outline;
 
+    public AudioClip impactSound;
+    public float delayBetweenImpacts = 0.5f;
+    float lastTimeImpacted;
+
+    [Header("Throwing")]
     public float minForceToDMG = 10f;
     public float maxForceToDMG = 20f;  
     public enum WeaponType {Light, Medium, Heavy}
@@ -14,6 +19,7 @@ public class Item : MonoBehaviour
     LayerMask playerMask;
     Guard guard;
 
+    [Header("Value & Objective")]
     public int itemWorth = 0;
     public bool isObjective = false;
 
@@ -78,6 +84,22 @@ public class Item : MonoBehaviour
                 }            
             }
         }
+
+        //Impact audio
+        if (impactSound != null)
+        {
+            if (Time.time >= lastTimeImpacted + delayBetweenImpacts)
+            {
+                lastTimeImpacted = Time.time;
+
+                //Get position
+                ContactPoint contact = collision.contacts[0];
+
+                //Play audio at position
+                AudioSource.PlayClipAtPoint(impactSound, contact.point);
+            }           
+        }
+            
     }
 
     public float MoveSpeedMultiplier()
