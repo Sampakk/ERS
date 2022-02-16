@@ -145,7 +145,7 @@ public class HUD : MonoBehaviour
             objective1Toggle.isOn = true;
         }
 
-        objectiveScoreText.text = "Collect atleast " + objectiveScore + "€ Worth Of  items!";
+        objectiveScoreText.text = "Collect at least " + objectiveScore + "€ Worth Of items!";
 
         if (hiace.currentScore >= objectiveScore)
         {
