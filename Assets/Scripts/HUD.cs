@@ -21,6 +21,8 @@ public class HUD : MonoBehaviour
     public Toggle objective1Toggle;
     public Toggle objective2Toggle;
     public TextMeshProUGUI objectiveScoreText;
+    public TextMeshProUGUI escapeText;
+
     public int objectiveScore = 10;
 
     // Start is called before the first frame update
@@ -35,6 +37,7 @@ public class HUD : MonoBehaviour
 
         interactIcon.enabled = false;
         useMapText.enabled = false;
+        escapeText.enabled = false;
 
         SetStatusText(0);
     }
@@ -43,9 +46,9 @@ public class HUD : MonoBehaviour
     void Update()
     {
         HandleInteraction();
-        
+
         HandleMap();
-        
+
         HandleThrowbar();
 
         HandleStatus();
@@ -53,6 +56,8 @@ public class HUD : MonoBehaviour
         AddScore();
 
         Objective();
+
+        HandleEscape();
     }
 
     void HandleInteraction()
@@ -155,6 +160,14 @@ public class HUD : MonoBehaviour
             {
                 objective2Toggle.isOn = true;
             }
+        }
+    }
+    void HandleEscape()
+    {
+        if (hiace != null)
+        {
+            if (hiace.atDoor) escapeText.enabled = true;
+            else escapeText.enabled = false;
         }
     }
 }
