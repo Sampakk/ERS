@@ -7,13 +7,19 @@ public class DisableCameras : MonoBehaviour
     GameObject player;
     GameObject[] cameraGameObject;
     GameObject[] cameraConeGameObject;
+    GameObject[] cameraFeedGameObject;
+    GameObject[] TVQuad;
     bool useable = false;
+    public Material CCTVDisabled;
+  
     
     void Start()
     {
         player = GameObject.FindWithTag("Player");
         cameraGameObject = GameObject.FindGameObjectsWithTag("SecurityCamera");
         cameraConeGameObject = GameObject.FindGameObjectsWithTag("ViewCone");
+        cameraFeedGameObject = GameObject.FindGameObjectsWithTag("CameraFeed");
+        TVQuad = GameObject.FindGameObjectsWithTag("CCTVQuad");
 
     }
 
@@ -52,6 +58,8 @@ public class DisableCameras : MonoBehaviour
         {
             cameraGameObject[i].GetComponent<SecurityCamera>().enabled = false;
             cameraConeGameObject[i].SetActive(false);
+            cameraFeedGameObject[i].SetActive(false);
+            TVQuad[i].GetComponent<MeshRenderer>().material = CCTVDisabled;
         }
     }
 }
