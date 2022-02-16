@@ -21,6 +21,8 @@ public class HUD : MonoBehaviour
     public Toggle objective1Toggle;
     public Toggle objective2Toggle;
     public TextMeshProUGUI objectiveScoreText;
+    public TextMeshProUGUI escapeText;
+
     public int objectiveScore = 10;
 
     // Start is called before the first frame update
@@ -33,9 +35,9 @@ public class HUD : MonoBehaviour
         useMap = FindObjectOfType<UseMap>();
         hiace = FindObjectOfType<Hiace>();
 
-
         interactIcon.enabled = false;
         useMapText.enabled = false;
+        escapeText.enabled = false;
 
         SetStatusText(0);
     }
@@ -44,9 +46,9 @@ public class HUD : MonoBehaviour
     void Update()
     {
         HandleInteraction();
-        
+
         HandleMap();
-        
+
         HandleThrowbar();
 
         HandleStatus();
@@ -54,6 +56,8 @@ public class HUD : MonoBehaviour
         AddScore();
 
         Objective();
+
+        HandleEscape();
     }
 
     void HandleInteraction()
@@ -134,22 +138,36 @@ public class HUD : MonoBehaviour
             Crosshair.enabled = true;
         }
     }
+
     void AddScore()
     {
-        score.text = hiace.currentScore.ToString() + "€";
+        if (hiace != null)
+            score.text = hiace.currentScore.ToString() + "€";
     }
+
     void Objective()
     {
-        if (hiace.objectiveDone)
+        if (hiace != null)
         {
-            objective1Toggle.isOn = true;
+            if (hiace.objectiveDone)
+            {
+                objective1Toggle.isOn = true;
+            }
+
+            objectiveScoreText.text = "Collect at least " + objectiveScore + "€ Worth Of items!";
+
+            if (hiace.currentScore >= objectiveScore)
+            {
+                objective2Toggle.isOn = true;
+            }
         }
-
-        objectiveScoreText.text = "Collect at least " + objectiveScore + "€ Worth Of items!";
-
-        if (hiace.currentScore >= objectiveScore)
+    }
+    void HandleEscape()
+    {
+        if (hiace != null)
         {
-            objective2Toggle.isOn = true;
+            if (hiace.atDoor) escapeText.enabled = true;
+            else escapeText.enabled = false;
         }
     }
 }

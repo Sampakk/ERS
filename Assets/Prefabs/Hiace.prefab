@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1732037321083743460}
   - component: {fileID: 1732037321083743461}
   - component: {fileID: 1732037321083743466}
+  - component: {fileID: 1291006589831607939}
   m_Layer: 0
   m_Name: Hiace
   m_TagString: Untagged
@@ -58,6 +59,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0787ff37e5d7340a680594cc606d6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentScore: 0
+  objectiveDone: 0
+--- !u!65 &1291006589831607939
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732037321083743467}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.25, y: 1.57, z: 1.25}
+  m_Center: {x: 0, y: 1.2, z: -0.92}
 --- !u!1001 &1732037320198781901
 PrefabInstance:
   m_ObjectHideFlags: 0
