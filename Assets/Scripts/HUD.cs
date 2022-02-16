@@ -33,7 +33,6 @@ public class HUD : MonoBehaviour
         useMap = FindObjectOfType<UseMap>();
         hiace = FindObjectOfType<Hiace>();
 
-
         interactIcon.enabled = false;
         useMapText.enabled = false;
 
@@ -134,22 +133,28 @@ public class HUD : MonoBehaviour
             Crosshair.enabled = true;
         }
     }
+
     void AddScore()
     {
-        score.text = hiace.currentScore.ToString() + "€";
+        if (hiace != null)
+            score.text = hiace.currentScore.ToString() + "€";
     }
+
     void Objective()
     {
-        if (hiace.objectiveDone)
+        if (hiace != null)
         {
-            objective1Toggle.isOn = true;
-        }
+            if (hiace.objectiveDone)
+            {
+                objective1Toggle.isOn = true;
+            }
 
-        objectiveScoreText.text = "Collect at least " + objectiveScore + "€ Worth Of items!";
+            objectiveScoreText.text = "Collect at least " + objectiveScore + "€ Worth Of items!";
 
-        if (hiace.currentScore >= objectiveScore)
-        {
-            objective2Toggle.isOn = true;
+            if (hiace.currentScore >= objectiveScore)
+            {
+                objective2Toggle.isOn = true;
+            }
         }
     }
 }
