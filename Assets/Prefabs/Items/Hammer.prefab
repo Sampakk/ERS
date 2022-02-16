@@ -79,7 +79,8 @@ MonoBehaviour:
   minForceToDMG: 10
   maxForceToDMG: 20
   type: 1
-  itemWorth: 5
+  itemWorth: 10
+  isObjective: 0
 --- !u!114 &4660560892836229784
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -79,7 +79,7 @@ MonoBehaviour:
   minForceToDMG: 10
   maxForceToDMG: 20
   type: 1
-  itemWorth: 30
+  itemWorth: 45
   isObjective: 0
 --- !u!114 &728645111149101142
 MonoBehaviour:
