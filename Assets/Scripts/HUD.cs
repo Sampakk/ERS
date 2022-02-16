@@ -16,12 +16,12 @@ public class HUD : MonoBehaviour
     public Image  interactIcon;
     public Image throwbar;
     public Image Crosshair;
-    public TextMeshProUGUI useMapText;
+    public TextMeshProUGUI useText;
     public TextMeshProUGUI score;
     public Toggle objective1Toggle;
     public Toggle objective2Toggle;
     public TextMeshProUGUI objectiveScoreText;
-    public TextMeshProUGUI escapeText;
+
 
     public int objectiveScore = 10;
 
@@ -36,8 +36,7 @@ public class HUD : MonoBehaviour
         hiace = FindObjectOfType<Hiace>();
 
         interactIcon.enabled = false;
-        useMapText.enabled = false;
-        escapeText.enabled = false;
+        useText.enabled = false;
 
         SetStatusText(0);
     }
@@ -47,7 +46,7 @@ public class HUD : MonoBehaviour
     {
         HandleInteraction();
 
-        HandleMap();
+        HandleUseButton();
 
         HandleThrowbar();
 
@@ -57,7 +56,6 @@ public class HUD : MonoBehaviour
 
         Objective();
 
-        HandleEscape();
     }
 
     void HandleInteraction()
@@ -122,20 +120,30 @@ public class HUD : MonoBehaviour
         }
     }
 
-    void HandleMap()
+    void HandleUseButton()
     {
-        if (useMap == null)
-            return;
-
-        if (useMap.AtBoard())
+        if (useMap != null)
         {
-            Crosshair.enabled = false;
-            useMapText.enabled = true;
+            if (useMap.AtBoard())
+            {
+                Crosshair.enabled = false;
+                useText.enabled = true;
+                useText.text = "Press 'E' To Use Map";
+            }
+            else
+            {
+                useText.enabled = false;
+                Crosshair.enabled = true;
+            }
         }
-        else
+        if (hiace != null)
         {
-            useMapText.enabled = false;
-            Crosshair.enabled = true;
+            if (hiace.atDoor)
+            {
+                useText.enabled = true;
+                useText.text = "Press 'E' To Escape";
+            }
+            else useText.enabled = false;
         }
     }
 
@@ -160,14 +168,6 @@ public class HUD : MonoBehaviour
             {
                 objective2Toggle.isOn = true;
             }
-        }
-    }
-    void HandleEscape()
-    {
-        if (hiace != null)
-        {
-            if (hiace.atDoor) escapeText.enabled = true;
-            else escapeText.enabled = false;
         }
     }
 }
