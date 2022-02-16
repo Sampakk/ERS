@@ -11,8 +11,9 @@ public class DisableCameras : MonoBehaviour
     GameObject[] TVQuad;
     bool useable = false;
     public Material CCTVDisabled;
-  
-    
+    AudioSource Shutoff;
+
+
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -20,6 +21,7 @@ public class DisableCameras : MonoBehaviour
         cameraConeGameObject = GameObject.FindGameObjectsWithTag("ViewCone");
         cameraFeedGameObject = GameObject.FindGameObjectsWithTag("CameraFeed");
         TVQuad = GameObject.FindGameObjectsWithTag("CCTVQuad");
+        Shutoff = GetComponent<AudioSource>();
 
     }
 
@@ -60,6 +62,7 @@ public class DisableCameras : MonoBehaviour
             cameraConeGameObject[i].SetActive(false);
             cameraFeedGameObject[i].SetActive(false);
             TVQuad[i].GetComponent<MeshRenderer>().material = CCTVDisabled;
+            Shutoff.Play(1);
         }
     }
 }
