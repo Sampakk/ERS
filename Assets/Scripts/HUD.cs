@@ -20,7 +20,8 @@ public class HUD : MonoBehaviour
     public TextMeshProUGUI score;
     public Toggle objective1Toggle;
     public Toggle objective2Toggle;
-    public TextMeshProUGUI objectiveScoreText;
+    public TextMeshProUGUI objective2Text;
+    public TextMeshProUGUI objective1Text;
 
 
     public int objectiveScore = 10;
@@ -160,9 +161,10 @@ public class HUD : MonoBehaviour
             if (hiace.objectiveDone)
             {
                 objective1Toggle.isOn = true;
+                objective1Text.text = "Escape with your Hiace";
             }
 
-            objectiveScoreText.text = "Collect at least " + objectiveScore + "€ Worth Of items!";
+            objective2Text.text = "Collect at least " + objectiveScore + "€ Worth Of items!";
 
             if (hiace.currentScore >= objectiveScore)
             {
