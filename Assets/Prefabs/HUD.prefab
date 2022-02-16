@@ -681,7 +681,11 @@ MonoBehaviour:
   throwbar: {fileID: 3165126432247101956}
   Crosshair: {fileID: 3165126431895409130}
   useMapText: {fileID: 6591861118678975915}
-  score: {fileID: 0}
+  score: {fileID: 1107779950136351883}
+  objective1Toggle: {fileID: 6217937685411212911}
+  objective2Toggle: {fileID: 8170470872360735867}
+  objectiveScoreText: {fileID: 2711430989033310897}
+  objectiveScore: 10
 --- !u!1 &3165126431019936492
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,7 +1207,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Find and stole the "crowbar"
+  m_text: Find and steal the "crowbar"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2bddf96a9198674cae1a22dd84f5b8f, type: 2}
   m_sharedMaterial: {fileID: 8215504553447078148, guid: a2bddf96a9198674cae1a22dd84f5b8f, type: 2}

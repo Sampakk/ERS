@@ -15,6 +15,7 @@ public class Item : MonoBehaviour
     Guard guard;
 
     public int itemWorth = 0;
+    public bool isObjective = false;
 
     void Start()
     {

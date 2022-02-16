@@ -18,6 +18,10 @@ public class HUD : MonoBehaviour
     public Image Crosshair;
     public TextMeshProUGUI useMapText;
     public TextMeshProUGUI score;
+    public Toggle objective1Toggle;
+    public Toggle objective2Toggle;
+    public TextMeshProUGUI objectiveScoreText;
+    public int objectiveScore = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +52,8 @@ public class HUD : MonoBehaviour
         HandleStatus();
 
         AddScore();
+
+        Objective();
     }
 
     void HandleInteraction()
@@ -131,5 +137,19 @@ public class HUD : MonoBehaviour
     void AddScore()
     {
         score.text = hiace.currentScore.ToString() + "€";
+    }
+    void Objective()
+    {
+        if (hiace.objectiveDone)
+        {
+            objective1Toggle.isOn = true;
+        }
+
+        objectiveScoreText.text = "Collect atleast " + objectiveScore + "€ Worth Of  items!";
+
+        if (hiace.currentScore >= objectiveScore)
+        {
+            objective2Toggle.isOn = true;
+        }
     }
 }

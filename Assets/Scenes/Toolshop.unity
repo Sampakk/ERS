@@ -280,17 +280,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &315546640 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7871517548844183881, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
-  m_PrefabInstance: {fileID: 1812032959}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &333194977
 GameObject:
   m_ObjectHideFlags: 0
@@ -1829,6 +1818,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1369647923399096761, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
+      propertyPath: m_IsOn
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2399021722913924852, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1869,10 +1862,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5300290117693474866, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
-      propertyPath: score
-      value: 
-      objectReference: {fileID: 315546640}
+    - target: {fileID: 3758303499155276717, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
+      propertyPath: m_IsOn
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8350899745928147236, guid: 811fc9baef29be04f97c1b603783a5ff, type: 3}
       propertyPath: antialiasingMode
       value: 1

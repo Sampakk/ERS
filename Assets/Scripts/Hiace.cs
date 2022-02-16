@@ -6,6 +6,7 @@ public class Hiace : MonoBehaviour
 {
     Item item;
     public int currentScore = 0;
+    public bool objectiveDone = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,8 @@ public class Hiace : MonoBehaviour
 
             item = other.gameObject.GetComponent<Item>();
             currentScore += item.itemWorth;
+
+            if (item.isObjective) objectiveDone = true;
         }
     }
 }
