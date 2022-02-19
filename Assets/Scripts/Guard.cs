@@ -121,9 +121,14 @@ public class Guard : MonoBehaviour
                     {
                         //Alert gamemanager
                         GameManager game = FindObjectOfType<GameManager>();
-                        if (game != null && !game.alerted) 
+                        if (game != null && !game.alerted)
+                        {
                             game.alerted = true;
 
+                            //Spawn more guards
+                            guardMan.StartSpawningTroops();
+                        }
+                            
                         //Chase audio
                         if (!isChasing)
                             PlayChaseAudio();
