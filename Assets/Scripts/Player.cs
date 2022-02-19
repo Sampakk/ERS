@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public float sprintSpeed = 8f;
     public float jumpHeight = 3f;
     public float crouchHeight;
+    Quaternion targetRotation;
     bool isCrouched;
 
     [Header("Ground check")]
@@ -70,8 +71,12 @@ public class Player : MonoBehaviour
         originalHeight = col.height;
         groundCheckHeight = groundCheck.position.y;
 
+<<<<<<< Updated upstream
         staminaSlider.maxValue = maxStamina;
         staminaSlider.minValue = 0;
+=======
+
+>>>>>>> Stashed changes
     }
 
     // Update is called once per frame
@@ -123,8 +128,12 @@ public class Player : MonoBehaviour
         Quaternion cameraRotation = Quaternion.Euler(xRotation, 0f, 0f);
         cam.localRotation = cameraRotation;
 
+       
+
         //Rotate player horizontally
-        transform.Rotate(Vector3.up * mouseX);
+        //transform.Rotate(Vector3.up * mouseX);
+
+
 
         //Crouching
         if (Input.GetKey(KeyCode.LeftControl))
@@ -143,6 +152,7 @@ public class Player : MonoBehaviour
             isCrouched = false;
         }
 
+<<<<<<< Updated upstream
         //Drain stamina when running
         if (IsRunning() && currentStamina > 0)
         {
@@ -162,6 +172,10 @@ public class Player : MonoBehaviour
 
 
         
+=======
+        targetRotation = Quaternion.Euler(0, transform.localEulerAngles.y + mouseX, 0);
+        rb.MoveRotation(targetRotation);
+>>>>>>> Stashed changes
     }
 
     void FixedUpdate()
@@ -179,6 +193,9 @@ public class Player : MonoBehaviour
         float verticalVelocity = Mathf.Clamp(rb.velocity.y, float.MinValue, jumpHeight);
         Vector3 horizontalVelocity = new Vector3(moveDir.x * moveSpeed, verticalVelocity, moveDir.z * moveSpeed);
         rb.velocity = horizontalVelocity;
+
+        
+
     }
 
     void OnTriggerEnter(Collider collider)
