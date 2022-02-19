@@ -224,7 +224,7 @@ public class Player : MonoBehaviour
         return isCrouched;
     }
 
-    bool IsGrounded()
+    public bool IsGrounded()
     {
         if (Physics.CheckSphere(groundCheck.position, groundDistance, groundMask)) return true;
         return false;
