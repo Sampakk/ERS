@@ -22,6 +22,7 @@ public class HUD : MonoBehaviour
     public Toggle objective2Toggle;
     public TextMeshProUGUI objective2Text;
     public TextMeshProUGUI objective1Text;
+    public TextMeshProUGUI timerText;
 
 
     public int objectiveScore = 10;
@@ -171,5 +172,9 @@ public class HUD : MonoBehaviour
                 objective2Toggle.isOn = true;
             }
         }
+    }
+    public void Timer(float time)
+    {
+        timerText.text = "Time Before The Cops Arrive: " + time.ToString("f0");
     }
 }

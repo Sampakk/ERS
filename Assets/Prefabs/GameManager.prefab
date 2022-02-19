@@ -270,3 +270,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alerted: 0
   timeBeforeCopsArrive: 300
+  timerIsActive: 0
