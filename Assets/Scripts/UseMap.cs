@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class UseMap : MonoBehaviour
 {
@@ -66,7 +66,7 @@ public class UseMap : MonoBehaviour
     public void SelectToolShop()
     {
         ExitGameMap();
-        EditorSceneManager.LoadScene(1);
+        SceneManager.LoadScene(1);
     }
 }
     

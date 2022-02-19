@@ -127,7 +127,7 @@ public class Interaction : MonoBehaviour
     void Throw()
     {
         //Get direction and torgue
-        Vector3 throwDir = hands.forward;
+        Vector3 throwDir = hands.forward + (Vector3.up * 0.1f);
         Vector3 throwTorgue = new Vector3(Random.Range(-1f, 1f), Random.Range(-2f, 2f), Random.Range(-1f, 1f));
 
         //Throw item and reset charging
