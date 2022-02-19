@@ -115,6 +115,11 @@ public class Guard : MonoBehaviour
                 {
                     if (CanSeePlayer())
                     {
+                        //Alert gamemanager
+                        GameManager game = FindObjectOfType<GameManager>();
+                        if (game != null && !game.alerted) 
+                            game.alerted = true;
+
                         //Chase audio
                         if (!isChasing)
                             PlayChaseAudio();
@@ -124,6 +129,7 @@ public class Guard : MonoBehaviour
                         agent.speed = runSpeed;
                         SetTargetDestination(target.position);
 
+                        //Update chase timer
                         lastTimeChased = Time.time;
                     }
                     else
