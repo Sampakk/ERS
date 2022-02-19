@@ -7,7 +7,8 @@ public class CameraEffects : MonoBehaviour
     Camera cam;
     Player player;
 
-    public float headbobSpeed = 8f;
+    public float headbobAmount = 0.12f;
+    public float headbobSpeed = 12f;
 
     public float fovKickAmount = 6f;
     float normalFov;
@@ -43,9 +44,10 @@ public class CameraEffects : MonoBehaviour
 
     void HeadBobbing()
     {
+        //Add groundcheck to headbobbing - no getter in player.cs !!!!
         if (player.IsRunning())
         {
-            float offset = Mathf.Sin(Time.time * headbobSpeed) * 0.1f;
+            float offset = Mathf.Sin(Time.time * headbobSpeed) * headbobAmount;
 
             Vector3 targetPos = new Vector3(0, normalPos.y + offset, 0);
             transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos, 10f * Time.deltaTime);
