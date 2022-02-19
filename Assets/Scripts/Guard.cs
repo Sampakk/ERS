@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class Guard : MonoBehaviour
 {
+    GameManager gameMan;
+    GuardManager guardMan;
     AudioSource audioSrc;
     NavMeshAgent agent;
     Animator anim;
@@ -65,6 +67,8 @@ public class Guard : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         target = FindObjectOfType<Player>().transform;
+        guardMan = FindObjectOfType<GuardManager>();
+        gameMan = FindObjectOfType<GameManager>();
 
         //Get limb rigidbodies
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
@@ -167,11 +171,18 @@ public class Guard : MonoBehaviour
             {
                 if (agent.remainingDistance < 0.25f)
                 {
-                    //Check if path is complete and start it again
-                    if (waypointIndex == waypoints.Count - 1) waypointIndex = 0;
-                    else waypointIndex++;
+                    if (gameMan != null && gameMan.alerted) //Wander around looking for the player
+                    {
+                        SetTargetDestination(guardMan.GetRandomWaypoint().position);
+                    }
+                    else //Follow path
+                    {
+                        //Check if path is complete and start it again
+                        if (waypointIndex == waypoints.Count - 1) waypointIndex = 0;
+                        else waypointIndex++;
 
-                    SetTargetDestination(waypoints[waypointIndex].position);
+                        SetTargetDestination(waypoints[waypointIndex].position);
+                    }                  
                 }
             }
             else //Try to attack
@@ -329,7 +340,7 @@ public class Guard : MonoBehaviour
     {
         StartCoroutine(ResetWalk(duration));
 
-        PlayHurtAudio(true);
+        PlayHurtAudio(false);
     }
 
     IEnumerator ResetWalk(float delay)

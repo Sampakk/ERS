@@ -8,6 +8,7 @@ public class GuardManager : MonoBehaviour
     public GameObject guardPrefab;
 
     [Header("Paths")]
+    public Transform waypoints;
     public Transform[] paths;
 
     List<Guard> guards = new List<Guard>();
@@ -33,6 +34,17 @@ public class GuardManager : MonoBehaviour
 
         //Add to list
         guards.Add(guard.GetComponent<Guard>());
+    }
+
+    public Transform GetRandomWaypoint()
+    {
+        Transform waypoint = null;
+
+        //Get random waypoint
+        int randomWaypoint = Random.Range(0, waypoints.childCount);
+        waypoint = waypoints.GetChild(randomWaypoint);
+
+        return waypoint;
     }
 
     public bool IsPlayerChased()
