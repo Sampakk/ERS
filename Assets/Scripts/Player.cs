@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -36,6 +37,14 @@ public class Player : MonoBehaviour
     float originalHeight;
     float groundCheckHeight;
 
+    [Header("Stamina")]
+    public float maxStamina = 100f;
+    public float staminaRegen = 5f;
+    public float staminaDrain = 5f;
+    float currentStamina = 100f;
+    public Slider staminaSlider;
+    public float jumpStaminaCost = 20f;
+
     [Header("Alerting")]
     public AudioClip[] alertSounds;
 
@@ -60,11 +69,16 @@ public class Player : MonoBehaviour
         wallCol = transform.GetChild(0).GetComponent<CapsuleCollider>();
         originalHeight = col.height;
         groundCheckHeight = groundCheck.position.y;
+
+        staminaSlider.maxValue = maxStamina;
+        staminaSlider.minValue = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        staminaSlider.value = currentStamina;
+
         if (interact.HasItemInHands()) //Carrying item
         {
             if (isCrouched) moveSpeedMultiplier = 0.5f;
@@ -93,8 +107,11 @@ public class Player : MonoBehaviour
             }
 
             //Jump
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") && currentStamina >= jumpStaminaCost)
+            {
                 rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+                currentStamina -= jumpStaminaCost;
+            }
         }
 
         //Get mouse movement
@@ -125,6 +142,26 @@ public class Player : MonoBehaviour
             StandUp();
             isCrouched = false;
         }
+
+        //Drain stamina when running
+        if (IsRunning() && currentStamina > 0)
+        {
+            currentStamina -= staminaDrain * Time.deltaTime;
+        }
+
+        //Regen stamina when not running
+        else if (!IsRunning() && currentStamina < maxStamina)
+        {
+            currentStamina += staminaRegen * Time.deltaTime;
+        }
+
+        if (currentStamina <= 0)
+        {
+            moveSpeed = walkSpeed * moveSpeedMultiplier;
+        }
+
+
+        
     }
 
     void FixedUpdate()
