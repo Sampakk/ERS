@@ -577,7 +577,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f6af5f13465f8b4d870d2f1953086f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fovKickAmount: 6
+  headbobAmount: 0.15
+  headbobSpeed: 12
+  fovKickAmount: 8
 --- !u!1001 &7089405233963544002
 PrefabInstance:
   m_ObjectHideFlags: 0
