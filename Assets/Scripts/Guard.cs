@@ -340,7 +340,7 @@ public class Guard : MonoBehaviour
     {
         StartCoroutine(ResetWalk(duration));
 
-        PlayHurtAudio(true);
+        PlayHurtAudio(false);
     }
 
     IEnumerator ResetWalk(float delay)

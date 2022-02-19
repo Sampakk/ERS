@@ -40,6 +40,7 @@ public class GuardManager : MonoBehaviour
     {
         Transform waypoint = null;
 
+        //Get random waypoint
         int randomWaypoint = Random.Range(0, waypoints.childCount);
         waypoint = waypoints.GetChild(randomWaypoint);
 

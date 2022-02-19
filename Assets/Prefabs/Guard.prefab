@@ -882,8 +882,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonkSound: {fileID: 8300000, guid: b58249292d46d5d42890539dc8b40f6a, type: 3}
-  hurtSound: {fileID: 0}
-  dieSound: {fileID: 0}
+  hurtSound: {fileID: 8300000, guid: 6e23097a37e05a446b5909c9491ce826, type: 3}
+  dieSound: {fileID: 8300000, guid: 14106de6067176c4589f33d0683f38e4, type: 3}
   chaseSounds:
   - {fileID: 8300000, guid: 18c5763c624459945b2ebc899ae543f5, type: 3}
   - {fileID: 8300000, guid: 95d916e917a99034499a6682bf746f8f, type: 3}
@@ -903,6 +903,7 @@ MonoBehaviour:
   attackRange: 1
   spotInterval: 0.5
   spotRadius: 10
+  chasingDelay: 2
   playerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -910,7 +911,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   isAlive: 1
-  health: 50
 --- !u!54 &9056745005170727555
 Rigidbody:
   m_ObjectHideFlags: 0
