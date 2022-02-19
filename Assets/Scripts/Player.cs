@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     public float maxStamina = 100f;
     public float staminaRegen = 5f;
     public float staminaDrain = 5f;
-    float currentStamina = 100f;
+    [HideInInspector] public float currentStamina = 100f;
     public Slider staminaSlider;
     public float jumpStaminaCost = 20f;
 
