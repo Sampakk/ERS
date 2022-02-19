@@ -107,6 +107,7 @@ public class Interaction : MonoBehaviour
         itemrb.freezeRotation = true;
         itemrb.constraints = RigidbodyConstraints.FreezePosition;
     }
+
     public void DropItem()
     {
         //Disable parent
@@ -123,9 +124,12 @@ public class Interaction : MonoBehaviour
 
     void Throw()
     {
-        Vector3 throwDir = hands.forward + (Vector3.up / 4f);
-        ThrowItem(throwDir, throwForce * GetThrowMult());
+        //Get direction and torgue
+        Vector3 throwDir = hands.forward;
+        Vector3 throwTorgue = new Vector3(Random.Range(-1f, 1f), Random.Range(-2f, 2f), Random.Range(-1f, 1f));
 
+        //Throw item and reset charging
+        ThrowItem(throwDir, throwTorgue, throwForce * GetThrowMult());
         chargeTimer = 0;
     }
 
@@ -134,11 +138,12 @@ public class Interaction : MonoBehaviour
         return chargeTimer / chargeTimeMax;
     }
 
-    void ThrowItem(Vector3 direction, float throwForce)
+    void ThrowItem(Vector3 direction, Vector3 torgue, float throwForce)
     {
         DropItem();
 
         itemrb.AddForce(direction * throwForce, ForceMode.Impulse);
+        itemrb.AddTorque(torgue, ForceMode.Impulse);
     }
 
     public Item GetItemInHands()
