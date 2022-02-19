@@ -174,6 +174,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    public bool IsRunning()
+    {
+        if (moveSpeed == sprintSpeed)
+            return true;
+
+        return false;
+    }
+
     public bool IsCrouched()
     {
         return isCrouched;
