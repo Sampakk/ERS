@@ -7,17 +7,25 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     AudioSource audioSrc;
+    GuardManager guardManager;
     HUD hud;
 
     public bool alerted;
     public float timeBeforeCopsArrive = 300f;
 
-    public bool timerIsActive = false;
+    [Header("Musics")]
+    public AudioSource music;
+    public AudioClip stealthMusic;
+    public AudioClip chaseMusic;
 
     // Start is called before the first frame update
     void Start()
     {
+        //Get components
         hud = FindObjectOfType<HUD>();
+        guardManager = FindObjectOfType<GuardManager>();
+
+        //Stop siren
         audioSrc = GetComponent<AudioSource>();
         audioSrc.Stop();
     }
@@ -28,6 +36,8 @@ public class GameManager : MonoBehaviour
         HandleSiren();
 
         HandleTimer();
+
+        HandleMusic();
     }
 
     void HandleSiren()
@@ -44,22 +54,46 @@ public class GameManager : MonoBehaviour
 
     void HandleTimer()
     {
-        if (alerted) timerIsActive = true;
-
-        if (timerIsActive)
+        if (alerted)
         {
             timeBeforeCopsArrive -= Time.deltaTime;
             
             if (hud != null) hud.Timer(timeBeforeCopsArrive);
             else return;
 
-            
-
             if (timeBeforeCopsArrive <= 0)
             {
                 timeBeforeCopsArrive = 0;
-                timerIsActive = false;
+                alerted = false;
                 GameOver();
+            }
+        }
+    }
+
+    void HandleMusic()
+    {
+        if (guardManager.IsPlayerChased())
+        {
+            if (music.isPlaying)
+            {
+                if (music.clip != chaseMusic)
+                {
+                    music.Stop();
+                    music.clip = chaseMusic;
+                    music.Play();
+                }
+            }
+        }
+        else
+        {
+            if (music.isPlaying)
+            {
+                if (music.clip != stealthMusic)
+                {
+                    music.Stop();
+                    music.clip = stealthMusic;
+                    music.Play();
+                }
             }
         }
     }

@@ -883,6 +883,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bonkSound: {fileID: 8300000, guid: b58249292d46d5d42890539dc8b40f6a, type: 3}
   hurtSound: {fileID: 8300000, guid: 6e23097a37e05a446b5909c9491ce826, type: 3}
+  alertSound: {fileID: 8300000, guid: 40c4a7b922278d246a3644d3b26175fa, type: 3}
   dieSound: {fileID: 8300000, guid: 14106de6067176c4589f33d0683f38e4, type: 3}
   chaseSounds:
   - {fileID: 8300000, guid: 18c5763c624459945b2ebc899ae543f5, type: 3}

@@ -77,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guardPrefab: {fileID: 8424392013203617434, guid: f2ef2bb8792f82245bb0452712967006, type: 3}
   troopsSpawnpoint: {fileID: 748107219127970625}
-  troopsCount: 3
+  troopsCount: 2
   waypoints: {fileID: 6070473007863100141}
   paths: []
 --- !u!1 &7151288840906300379
