@@ -15,6 +15,7 @@ public class Item : MonoBehaviour
     public float maxForceToDMG = 20f;  
     public enum WeaponType {Light, Medium, Heavy}
     public WeaponType type;
+    public bool isAbleToBreakDoors = false;
 
     LayerMask playerMask;
     Guard guard;
@@ -98,6 +99,12 @@ public class Item : MonoBehaviour
                 //Play audio at position
                 AudioSource.PlayClipAtPoint(impactSound, contact.point);
             }           
+        }
+
+        if (collision.gameObject.tag == "BreakableDoor" && isAbleToBreakDoors)
+        {
+            collision.rigidbody.constraints = RigidbodyConstraints.None;
+            collision.collider.material = null;
         }
             
     }

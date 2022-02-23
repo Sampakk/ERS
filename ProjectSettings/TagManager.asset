@@ -9,6 +9,7 @@ TagManager:
   - ViewCone
   - CameraFeed
   - TVQuad
+  - BreakableDoor
   layers:
   - Default
   - TransparentFX
