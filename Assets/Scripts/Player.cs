@@ -226,10 +226,23 @@ public class Player : MonoBehaviour
             }
 
             //Jump
-            if (Input.GetButtonDown("Jump") && currentStamina >= jumpStaminaCost)
+            if(MenuController.Bhop == 0)
             {
-                rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
-                currentStamina -= jumpStaminaCost;
+                if (Input.GetButtonDown("Jump") && currentStamina >= jumpStaminaCost)
+                {
+                    rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+                    currentStamina -= jumpStaminaCost;
+                    
+                }
+            }
+            if(MenuController.Bhop == 1)
+            {
+                if (Input.GetAxis("Mouse ScrollWheel") < 0 && currentStamina >= jumpStaminaCost)
+                {
+                    rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+                    currentStamina -= jumpStaminaCost;
+                    
+                }
             }
         }
     }
