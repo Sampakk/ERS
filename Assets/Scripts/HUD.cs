@@ -23,6 +23,7 @@ public class HUD : MonoBehaviour
     public TextMeshProUGUI objective2Text;
     public TextMeshProUGUI objective1Text;
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI HpText;
 
 
     public int objectiveScore = 10;
@@ -57,6 +58,8 @@ public class HUD : MonoBehaviour
         AddScore();
 
         Objective();
+
+        HandleHP();
 
     }
 
@@ -176,5 +179,9 @@ public class HUD : MonoBehaviour
     public void Timer(float time)
     {
         timerText.text = "Time Before The Cops Arrive: " + time.ToString("f0");
+    }
+    void HandleHP()
+    {
+        HpText.text = "Health: " + player.currentHP.ToString("f0");
     }
 }
