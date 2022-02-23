@@ -37,9 +37,11 @@ public class HUD : MonoBehaviour
     public Sprite crouchIcon;
     public Sprite runIcon;
 
-    [Header("Pause Menu")]
-    public GameObject pauseMenuUI;
-    public static bool GameIsPaused = false;
+    [Header("Root Windows")]
+    public GameObject inGameRoot;
+    public GameObject winRoot;
+    public GameObject menuRoot;
+    public static bool gameIsPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +53,12 @@ public class HUD : MonoBehaviour
         useMap = FindObjectOfType<UseMap>();
         hiace = FindObjectOfType<Hiace>();
 
+        //Setup roots
+        inGameRoot.SetActive(true);
+        winRoot.SetActive(false);
+        menuRoot.SetActive(false);
+
+        //Setup
         interactIcon.enabled = false;
         useText.enabled = false;
 
@@ -76,9 +84,9 @@ public class HUD : MonoBehaviour
 
         HandleHP();
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && !winRoot.activeSelf)
         {
-            if (GameIsPaused)
+            if (gameIsPaused)
             {
                 Resume();
             }
@@ -87,7 +95,6 @@ public class HUD : MonoBehaviour
                 Pause();
             }
         }
-
     }
 
     void HandleInteraction()
@@ -235,8 +242,9 @@ public class HUD : MonoBehaviour
         Time.timeScale = 1f;
 
         //Disable menu
-        pauseMenuUI.SetActive(false);
-        GameIsPaused = false;
+        inGameRoot.SetActive(true);
+        menuRoot.SetActive(false);
+        gameIsPaused = false;
 
         //Hide & lock cursor
         Cursor.visible = false;
@@ -248,12 +256,21 @@ public class HUD : MonoBehaviour
         Time.timeScale = 0f;
 
         //Enable menu
-        pauseMenuUI.SetActive(true);   
-        GameIsPaused = true;
+        inGameRoot.SetActive(false);
+        menuRoot.SetActive(true);   
+        gameIsPaused = true;
 
         //Show & unlock cursor
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void ShowWinScreen()
+    {
+        //Enable win root
+        inGameRoot.SetActive(false);
+        menuRoot.SetActive(false);
+        winRoot.SetActive(true);
     }
 
     public void QuitGame()

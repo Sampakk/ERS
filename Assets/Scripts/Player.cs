@@ -184,7 +184,7 @@ public class Player : MonoBehaviour
     void GetInput()
     {
         //Dont take input if pause menu is open
-        if (HUD.GameIsPaused)
+        if (HUD.gameIsPaused)
             return;
 
         //Get input

@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     void HandleTimer()
     {
         if (alerted) timerIsActive = true;
@@ -62,6 +63,26 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public void EscapeToHQ()
+    {
+        StartCoroutine(LoadToHQ(5f));
+    }
+
+    IEnumerator LoadToHQ(float delay)
+    {
+        Time.timeScale = 0;
+
+        //Show win screen
+        hud.ShowWinScreen();
+
+        //Wait
+        yield return new WaitForSecondsRealtime(delay);
+
+        //Load to HQ
+        SceneManager.LoadScene(1);
+    }
+
     void GameOver()
     {
         SceneManager.LoadScene(0);
