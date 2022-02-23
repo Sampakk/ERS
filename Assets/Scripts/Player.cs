@@ -54,7 +54,8 @@ public class Player : MonoBehaviour
     public float regenHPDelay = 10f;
     float regenTimer = 10f;
 
-    [Header("Alerting")]
+    [Header("Sounds")]
+    public AudioClip[] hurtSounds;
     public AudioClip[] alertSounds;
 
     [Header("Footsteps")]
@@ -300,12 +301,19 @@ public class Player : MonoBehaviour
             TimeToNextFootsteps = 0.75f;
         }
     }
+
     public void TakeDamage(float dmgAmount)
     {
         currentHP -= dmgAmount;
         regenTimer = regenHPDelay;
+
         if (currentHP <= 0) Die();
+
+        //Audio
+        int random = Random.Range(0, hurtSounds.Length);
+        audioSource.PlayOneShot(hurtSounds[random]);
     }
+
     void RegenHP()
     {
         regenTimer -= Time.deltaTime;
@@ -316,6 +324,7 @@ public class Player : MonoBehaviour
             if (currentHP > 100f) currentHP = 100f;
         }
     }
+
     void Die()
     {
         SceneManager.LoadScene(0);

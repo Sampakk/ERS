@@ -373,8 +373,15 @@ MonoBehaviour:
   maxStamina: 100
   staminaRegen: 15
   staminaDrain: 15
+  currentStamina: 100
   staminaSlider: {fileID: 7293334611600969626}
   jumpStaminaCost: 20
+  maxHP: 100
+  currentHP: 100
+  regenHPAmount: 5
+  regenHPDelay: 10
+  hurtSounds:
+  - {fileID: 8300000, guid: dee146ebbb4f0d64383684e2b90b69e8, type: 3}
   alertSounds:
   - {fileID: 8300000, guid: d4da5b6342d082a48bc3f6f3a34e5a6c, type: 3}
   - {fileID: 8300000, guid: 1f44063c5f9956c428d04979bdda97f9, type: 3}
@@ -423,7 +430,7 @@ AudioSource:
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
-  BypassReverbZones: 1
+  BypassReverbZones: 0
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
