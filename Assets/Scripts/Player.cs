@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -46,7 +47,15 @@ public class Player : MonoBehaviour
     public Slider staminaSlider;
     public float jumpStaminaCost = 20f;
 
-    [Header("Alerting")]
+    [Header("Health")]
+    public float maxHP = 100f;
+    [HideInInspector]public float currentHP = 100f;
+    public float regenHPAmount = 5f;
+    public float regenHPDelay = 10f;
+    float regenTimer = 10f;
+
+    [Header("Sounds")]
+    public AudioClip[] hurtSounds;
     public AudioClip[] alertSounds;
 
     [Header("Footsteps")]
@@ -73,6 +82,8 @@ public class Player : MonoBehaviour
 
         staminaSlider.maxValue = maxStamina;
         staminaSlider.minValue = 0;
+
+        currentHP = maxHP;
     }
 
     // Update is called once per frame
@@ -161,6 +172,8 @@ public class Player : MonoBehaviour
         //Horizontal mouselook
         targetRotation = Quaternion.Euler(0, transform.localEulerAngles.y + mouseX, 0);
         rb.MoveRotation(targetRotation);
+
+        if (currentHP < 100f) RegenHP();
     }
 
     void FixedUpdate()
@@ -287,5 +300,33 @@ public class Player : MonoBehaviour
             audioSource.Play();
             TimeToNextFootsteps = 0.75f;
         }
+    }
+
+    public void TakeDamage(float dmgAmount)
+    {
+        currentHP -= dmgAmount;
+        regenTimer = regenHPDelay;
+
+        if (currentHP <= 0) Die();
+
+        //Audio
+        int random = Random.Range(0, hurtSounds.Length);
+        audioSource.PlayOneShot(hurtSounds[random]);
+    }
+
+    void RegenHP()
+    {
+        regenTimer -= Time.deltaTime;
+
+        if (regenTimer < 0)
+        {
+            currentHP += regenHPAmount * Time.deltaTime;
+            if (currentHP > 100f) currentHP = 100f;
+        }
+    }
+
+    void Die()
+    {
+        SceneManager.LoadScene(0);
     }
 }

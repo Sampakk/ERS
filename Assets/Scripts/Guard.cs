@@ -10,6 +10,7 @@ public class Guard : MonoBehaviour
     AudioSource audioSrc;
     NavMeshAgent agent;
     Animator anim;
+    Player player;
 
     List<Rigidbody> limbs = new List<Rigidbody>();
     List<Collider> cols = new List<Collider>();
@@ -69,6 +70,7 @@ public class Guard : MonoBehaviour
         target = FindObjectOfType<Player>().transform;
         guardMan = FindObjectOfType<GuardManager>();
         gameMan = FindObjectOfType<GameManager>();
+        player = FindObjectOfType<Player>();
 
         //Get limb rigidbodies
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
@@ -302,7 +304,7 @@ public class Guard : MonoBehaviour
         yield return new WaitForSeconds(attackDelay / 2);
 
         //Damage player
-
+        player.TakeDamage(damage);
         yield return new WaitForSeconds(attackDelay / 2);
 
         //Continue movement
