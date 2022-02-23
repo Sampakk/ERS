@@ -61,6 +61,7 @@ public class HUD : MonoBehaviour
         //Setup
         interactIcon.enabled = false;
         useText.enabled = false;
+        gameIsPaused = false;
 
         SetStatusText(0);
     }
