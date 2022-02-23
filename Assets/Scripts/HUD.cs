@@ -31,7 +31,13 @@ public class HUD : MonoBehaviour
     public TextMeshProUGUI objective1Text;
     public int objectiveScore = 10;
 
-    [Header("Pause menu")]
+    [Header("Player Icon")]
+    public Image playerIcon;
+    public Sprite standIcon;
+    public Sprite crouchIcon;
+    public Sprite runIcon;
+
+    [Header("Pause Menu")]
     public GameObject pauseMenuUI;
     public static bool GameIsPaused = false;
 
@@ -61,6 +67,8 @@ public class HUD : MonoBehaviour
         HandleThrowbar();
 
         HandleStatus();
+
+        HandleIcon();
 
         AddScore();
 
@@ -168,6 +176,22 @@ public class HUD : MonoBehaviour
                 useText.text = "Press 'E' To Escape";
             }
             else useText.enabled = false;
+        }
+    }
+
+    void HandleIcon()
+    {
+        if (player.IsCrouched())
+        {
+            playerIcon.sprite = crouchIcon;
+        }
+        else if (player.IsRunning())
+        {
+            playerIcon.sprite = runIcon;
+        }
+        else
+        {
+            playerIcon.sprite = standIcon;
         }
     }
 
