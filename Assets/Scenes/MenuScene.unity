@@ -3633,7 +3633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeTextValue: {fileID: 783240583}
   volumeSlider: {fileID: 912666296}
-  defaultVolume: 1
+  defaultVolume: 0.5
   confirmationPrompt: {fileID: 1858365335}
   _newGameLevel: HQ
   noSavedGameDialog: {fileID: 1478571468}
