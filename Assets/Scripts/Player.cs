@@ -327,6 +327,6 @@ public class Player : MonoBehaviour
 
     void Die()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 }
