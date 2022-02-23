@@ -6,8 +6,10 @@ public class Item : MonoBehaviour
 {
     Outline outline;
 
+    [Header("Impacts")]
     public AudioClip impactSound;
     public float delayBetweenImpacts = 0.5f;
+    public float alertRadius = 10f;
     float lastTimeImpacted;
 
     [Header("Throwing")]
@@ -59,34 +61,26 @@ public class Item : MonoBehaviour
 
             if (collision.relativeVelocity.magnitude > maxForceToDMG && type == WeaponType.Medium)
             {
-                Debug.Log("Tappo medium aseella");
-
                 guard.Die();
             }
             else if (collision.relativeVelocity.magnitude > minForceToDMG)
             {
                 if (type == WeaponType.Heavy)
                 {
-                    Debug.Log("Tappo heavy aseella");
-
                     guard.Die();
                 }
                 else if (type == WeaponType.Medium)
                 {
-                    Debug.Log("Hidastus medium aseella");
-
                     guard.Slowdown(3f);
                 }
                 else if (type == WeaponType.Light)
                 {
-                    Debug.Log("Hidastus light aseella");
-
                     guard.Slowdown(3f);
                 }            
             }
         }
 
-        //Impact audio
+        //Impact audio & alerting guards
         if (impactSound != null)
         {
             if (Time.time >= lastTimeImpacted + delayBetweenImpacts)
@@ -98,6 +92,19 @@ public class Item : MonoBehaviour
 
                 //Play audio at position
                 AudioSource.PlayClipAtPoint(impactSound, contact.point);
+
+                //Check if guards are near and alert them
+                GameObject[] guards = GameObject.FindGameObjectsWithTag("enemy");
+                foreach(GameObject guard in guards)
+                {
+                    //Get distance
+                    float distance = Vector3.Distance(guard.transform.position, transform.position);
+                    if (distance <= alertRadius)
+                    {
+                        Debug.Log("Guard heard that!");
+                        guard.GetComponent<Guard>().CheckSoundAtPlace(transform.position);
+                    }
+                }
             }           
         }
 
@@ -105,8 +112,7 @@ public class Item : MonoBehaviour
         {
             collision.rigidbody.constraints = RigidbodyConstraints.None;
             collision.collider.material = null;
-        }
-            
+        }        
     }
 
     public float MoveSpeedMultiplier()

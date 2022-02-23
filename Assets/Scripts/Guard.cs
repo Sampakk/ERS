@@ -288,6 +288,18 @@ public class Guard : MonoBehaviour
             agent.SetDestination(targetPos);
     }
 
+    public void CheckSoundAtPlace(Vector3 targetPos)
+    {
+        if (isChasing)
+            return;
+
+        //Audio
+        //TODO
+
+        //Go to position
+        SetTargetDestination(targetPos);
+    }
+
     public void Attack()
     {
         if (!attacking)
