@@ -16,7 +16,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Slider MouseSensSlider;
     [SerializeField] private float defaultSens = 1f;
     [SerializeField] private Toggle BhopToggle = null;
-    public float MouseSens = 1f;
+    public float MouseSens;
     public static int Bhop = 0;
 
     [Header("Confirmation")]
@@ -61,6 +61,7 @@ public class MenuController : MonoBehaviour
 
     public void SetMouseSensitivity(float sensitivity)
     {
+        //bugged :) sens changes on inspector but not the in-game text box nor is PlayerPref. Also sens change not even implemented in  movement scripts.
         MouseSens = sensitivity;
         MouseSensTextValue.text = sensitivity.ToString("0.0");
     }
@@ -86,6 +87,13 @@ public class MenuController : MonoBehaviour
             volumeSlider.value = defaultVolume;
             volumeTextValue.text = defaultVolume.ToString("0.0");
             VolumeApply();
+        }
+        if (Menutype == "Gameplay")
+        {
+            MouseSensTextValue.text = defaultSens.ToString("0");
+            MouseSensSlider.value = defaultSens;
+            BhopToggle.isOn = false;
+            GameplayApply();
         }
     }
 
