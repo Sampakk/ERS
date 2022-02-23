@@ -31,9 +31,17 @@ public class HUD : MonoBehaviour
     public TextMeshProUGUI objective1Text;
     public int objectiveScore = 10;
 
-    [Header("Pause menu")]
-    public GameObject pauseMenuUI;
-    public static bool GameIsPaused = false;
+    [Header("Player Icon")]
+    public Image playerIcon;
+    public Sprite standIcon;
+    public Sprite crouchIcon;
+    public Sprite runIcon;
+
+    [Header("Root Windows")]
+    public GameObject inGameRoot;
+    public GameObject winRoot;
+    public GameObject menuRoot;
+    public static bool gameIsPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -45,8 +53,15 @@ public class HUD : MonoBehaviour
         useMap = FindObjectOfType<UseMap>();
         hiace = FindObjectOfType<Hiace>();
 
+        //Setup roots
+        inGameRoot.SetActive(true);
+        winRoot.SetActive(false);
+        menuRoot.SetActive(false);
+
+        //Setup
         interactIcon.enabled = false;
         useText.enabled = false;
+        gameIsPaused = false;
 
         SetStatusText(0);
     }
@@ -62,15 +77,17 @@ public class HUD : MonoBehaviour
 
         HandleStatus();
 
+        HandleIcon();
+
         AddScore();
 
         Objective();
 
         HandleHP();
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && !winRoot.activeSelf)
         {
-            if (GameIsPaused)
+            if (gameIsPaused)
             {
                 Resume();
             }
@@ -79,7 +96,6 @@ public class HUD : MonoBehaviour
                 Pause();
             }
         }
-
     }
 
     void HandleInteraction()
@@ -171,6 +187,22 @@ public class HUD : MonoBehaviour
         }
     }
 
+    void HandleIcon()
+    {
+        if (player.IsCrouched())
+        {
+            playerIcon.sprite = crouchIcon;
+        }
+        else if (player.IsRunning())
+        {
+            playerIcon.sprite = runIcon;
+        }
+        else
+        {
+            playerIcon.sprite = standIcon;
+        }
+    }
+
     void AddScore()
     {
         if (hiace != null)
@@ -211,8 +243,9 @@ public class HUD : MonoBehaviour
         Time.timeScale = 1f;
 
         //Disable menu
-        pauseMenuUI.SetActive(false);
-        GameIsPaused = false;
+        inGameRoot.SetActive(true);
+        menuRoot.SetActive(false);
+        gameIsPaused = false;
 
         //Hide & lock cursor
         Cursor.visible = false;
@@ -224,12 +257,21 @@ public class HUD : MonoBehaviour
         Time.timeScale = 0f;
 
         //Enable menu
-        pauseMenuUI.SetActive(true);   
-        GameIsPaused = true;
+        inGameRoot.SetActive(false);
+        menuRoot.SetActive(true);   
+        gameIsPaused = true;
 
         //Show & unlock cursor
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void ShowWinScreen()
+    {
+        //Enable win root
+        inGameRoot.SetActive(false);
+        menuRoot.SetActive(false);
+        winRoot.SetActive(true);
     }
 
     public void QuitGame()

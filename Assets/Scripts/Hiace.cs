@@ -5,26 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class Hiace : MonoBehaviour
 {
+    HUD hud;
     Item item;
+
     public int currentScore = 0;
     public bool objectiveDone = false;
 
     public bool atDoor = false;
 
-    HUD hud;
     // Start is called before the first frame update
     void Start()
     {
         hud = FindObjectOfType<HUD>();
     }
+
     // Update is called once per frame
     void Update()
     {
         if (objectiveDone && Input.GetKeyDown(KeyCode.E) && atDoor)
-        {
-            SceneManager.LoadScene(0);
-        }
+            FindObjectOfType<GameManager>().EscapeToHQ();
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Objects"))
@@ -36,11 +37,13 @@ public class Hiace : MonoBehaviour
 
             if (item.isObjective) objectiveDone = true;
         }
+
         if ( other.tag == "Player")
         {
             atDoor = true;
         }
     }
+
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player") atDoor = false;
