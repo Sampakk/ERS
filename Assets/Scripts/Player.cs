@@ -89,6 +89,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GetInput();
+
         staminaSlider.value = currentStamina;
 
         if (interact.HasItemInHands()) //Carrying item
@@ -102,56 +104,14 @@ public class Player : MonoBehaviour
             else moveSpeedMultiplier = 1f;
         }
             
-        //Get input
-        moveX = Input.GetAxis("Horizontal");
-        moveZ = Input.GetAxis("Vertical");
-
-        if (IsGrounded())
-        {
-            //Apply walk speed
-            moveSpeed = walkSpeed * moveSpeedMultiplier;        
-
-            if (!interact.HasItemInHands())
-            {
-                //Override to run speed
-                if (Input.GetKey(KeyCode.LeftShift) && moveZ > 0)
-                    moveSpeed = sprintSpeed;
-            }
-
-            //Jump
-            if (Input.GetButtonDown("Jump") && currentStamina >= jumpStaminaCost)
-            {
-                rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
-                currentStamina -= jumpStaminaCost;
-            }
-        }
-
-            //Get mouse movement
-            mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-            mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-
         //Apply vertical rotation and clamp it
-            xRotation = cam.localEulerAngles.x + mouseY;
-            Quaternion cameraRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            cam.localRotation = cameraRotation;
+        xRotation = cam.localEulerAngles.x + mouseY;
+        Quaternion cameraRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        cam.localRotation = cameraRotation;
 
-        //Crouching
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            Crouch();
-            isCrouched = true;
-
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            StandUp();
-        }
-        else if (CanStandUp() == true)
-        {
-            StandUp();
-            isCrouched = false;
-        }
+        //Horizontal rotation
+        targetRotation = Quaternion.Euler(0, transform.localEulerAngles.y + mouseX, 0);
+        rb.MoveRotation(targetRotation);
 
         //Drain stamina when running
         if (IsRunning() && currentStamina > 0)
@@ -169,10 +129,6 @@ public class Player : MonoBehaviour
         {
             moveSpeed = walkSpeed * moveSpeedMultiplier;
         }
-
-        //Horizontal mouselook
-        targetRotation = Quaternion.Euler(0, transform.localEulerAngles.y + mouseX, 0);
-        rb.MoveRotation(targetRotation);
 
         if (currentHP < 100f) RegenHP();
     }
@@ -224,6 +180,137 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Functions
+    void GetInput()
+    {
+        //Dont take input if pause menu is open
+        if (HUD.GameIsPaused)
+            return;
+
+        //Get input
+        moveX = Input.GetAxis("Horizontal");
+        moveZ = Input.GetAxis("Vertical");
+
+        //Get mouse input
+        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        //Crouching
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            Crouch();
+            isCrouched = true;
+
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            StandUp();
+        }
+        else if (CanStandUp() == true)
+        {
+            StandUp();
+            isCrouched = false;
+        }
+
+        //Running & jumping
+        if (IsGrounded())
+        {
+            //Apply walk speed
+            moveSpeed = walkSpeed * moveSpeedMultiplier;
+
+            if (!interact.HasItemInHands())
+            {
+                //Override to run speed
+                if (Input.GetKey(KeyCode.LeftShift) && moveZ > 0)
+                    moveSpeed = sprintSpeed;
+            }
+
+            //Jump
+            if (Input.GetButtonDown("Jump") && currentStamina >= jumpStaminaCost)
+            {
+                rb.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+                currentStamina -= jumpStaminaCost;
+            }
+        }
+    }
+
+    void Crouch()
+    {
+        col.height = crouchHeight;
+        wallCol.height = crouchHeight;
+        //groundCheck.position = groundCheck.position + new Vector3(0,0.5f,0);
+    }
+
+    void StandUp()
+    {
+        if (IsUnder() == false)
+        {
+            col.height = originalHeight;
+            wallCol.height = originalHeight;
+            //groundCheck.position = groundCheck.position + new Vector3(0, -0.5f, 0);
+        }
+    }
+
+    void Footsteps()
+    {
+        TimeToNextFootsteps = TimeToNextFootsteps - Time.deltaTime;
+        Vector3 vel = rb.velocity;
+
+
+        //sprint footsteps
+        if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !isCrouched)
+        {
+            audioSource.volume = 0.4f;
+            audioSource.Play();
+            TimeToNextFootsteps = 0.3f;
+        }
+
+        //walking footsteps
+        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && !isCrouched)
+        {
+            audioSource.volume = 0.3f;
+            audioSource.Play();
+            TimeToNextFootsteps = 0.5f;
+        }
+
+        //crouched footsteps
+        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && isCrouched)
+        {
+            audioSource.volume = 0.25f;
+            audioSource.Play();
+            TimeToNextFootsteps = 0.75f;
+        }
+    }
+
+    void RegenHP()
+    {
+        regenTimer -= Time.deltaTime;
+
+        if (regenTimer < 0)
+        {
+            currentHP += regenHPAmount * Time.deltaTime;
+            if (currentHP > 100f) currentHP = 100f;
+        }
+    }
+
+    void Die()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void TakeDamage(float dmgAmount)
+    {
+        currentHP -= dmgAmount;
+        regenTimer = regenHPDelay;
+
+        if (currentHP <= 0) Die();
+
+        //Audio
+        int random = Random.Range(0, hurtSounds.Length);
+        audioSource.PlayOneShot(hurtSounds[random]);
+    }
+
+    //Booleans
     public bool IsRunning()
     {
         if (moveSpeed == sprintSpeed)
@@ -253,81 +340,5 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl)) return false;
         return true;
-    }
-
-    void Crouch()
-    {
-        col.height = crouchHeight;
-        wallCol.height = crouchHeight;
-        //groundCheck.position = groundCheck.position + new Vector3(0,0.5f,0);
-    }
-
-    void StandUp()
-    {   
-        if (IsUnder() == false)
-        {
-            col.height = originalHeight;
-            wallCol.height = originalHeight;
-            //groundCheck.position = groundCheck.position + new Vector3(0, -0.5f, 0);
-        }
-    }
-
-    void Footsteps()
-    {
-        TimeToNextFootsteps = TimeToNextFootsteps - Time.deltaTime;
-        Vector3 vel = rb.velocity;
-        
-
-         //sprint footsteps
-        if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !isCrouched)
-        {
-            audioSource.volume = 0.4f;
-            audioSource.Play();
-            TimeToNextFootsteps = 0.3f;
-        }
-
-        //walking footsteps
-        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && !isCrouched)
-        {
-            audioSource.volume = 0.3f;
-            audioSource.Play();
-            TimeToNextFootsteps = 0.5f;
-        }
-
-        //crouched footsteps
-        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && isCrouched)
-        {
-            audioSource.volume = 0.25f;
-            audioSource.Play();
-            TimeToNextFootsteps = 0.75f;
-        }
-    }
-
-    public void TakeDamage(float dmgAmount)
-    {
-        currentHP -= dmgAmount;
-        regenTimer = regenHPDelay;
-
-        if (currentHP <= 0) Die();
-
-        //Audio
-        int random = Random.Range(0, hurtSounds.Length);
-        audioSource.PlayOneShot(hurtSounds[random]);
-    }
-
-    void RegenHP()
-    {
-        regenTimer -= Time.deltaTime;
-
-        if (regenTimer < 0)
-        {
-            currentHP += regenHPAmount * Time.deltaTime;
-            if (currentHP > 100f) currentHP = 100f;
-        }
-    }
-
-    void Die()
-    {
-        SceneManager.LoadScene(1);
     }
 }

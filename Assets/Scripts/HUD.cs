@@ -7,32 +7,33 @@ using UnityEngine.SceneManagement;
 
 public class HUD : MonoBehaviour
 {
-    [Header("Pause menu")]
-    public static bool GameIsPaused = false;
-    public GameObject pauseMenuUI;
-
-
     Player player;
     Interaction interaction;
     GuardManager guardManager;
     UseMap useMap;
     Hiace hiace;
 
+    public TextMeshProUGUI score;
+    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI HpText;
+
+    [Header("Interaction")]
     public TextMeshProUGUI statusText;
     public Image  interactIcon;
     public Image throwbar;
     public Image Crosshair;
     public TextMeshProUGUI useText;
-    public TextMeshProUGUI score;
+    
+    [Header("Objectives")]
     public Toggle objective1Toggle;
     public Toggle objective2Toggle;
     public TextMeshProUGUI objective2Text;
     public TextMeshProUGUI objective1Text;
-    public TextMeshProUGUI timerText;
-    public TextMeshProUGUI HpText;
-
-
     public int objectiveScore = 10;
+
+    [Header("Pause menu")]
+    public GameObject pauseMenuUI;
+    public static bool GameIsPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -194,10 +195,12 @@ public class HUD : MonoBehaviour
             }
         }
     }
+
     public void Timer(float time)
     {
         timerText.text = "Time Before The Cops Arrive: " + time.ToString("f0");
     }
+
     void HandleHP()
     {
         HpText.text = "Health: " + player.currentHP.ToString("f0");
@@ -205,18 +208,28 @@ public class HUD : MonoBehaviour
 
     public void Resume()
     {
-        Cursor.visible = false;
-        pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
+
+        //Disable menu
+        pauseMenuUI.SetActive(false);
         GameIsPaused = false;
+
+        //Hide & lock cursor
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Pause()
     {
-        pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
+
+        //Enable menu
+        pauseMenuUI.SetActive(true);   
         GameIsPaused = true;
+
+        //Show & unlock cursor
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void QuitGame()
