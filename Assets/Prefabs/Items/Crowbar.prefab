@@ -77,9 +77,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactSound: {fileID: 8300000, guid: 143bf53e7bfa79f47bc4d8514a68951c, type: 3}
+  delayBetweenImpacts: 0.5
+  alertRadius: 10
   minForceToDMG: 10
   maxForceToDMG: 20
   type: 1
+  isAbleToBreakDoors: 0
   itemWorth: 0
   isObjective: 1
 --- !u!114 &885831029901491833
