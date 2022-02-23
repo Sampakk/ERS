@@ -271,3 +271,6 @@ MonoBehaviour:
   alerted: 0
   timeBeforeCopsArrive: 300
   timerIsActive: 0
+  music: {fileID: 1243601187986039324}
+  stealthMusic: {fileID: 8300000, guid: be2afe472019cb94aa42f36f65bea264, type: 3}
+  chaseMusic: {fileID: 8300000, guid: 347c6fa7b84a9604a9a8a790f4103a3a, type: 3}

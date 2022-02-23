@@ -19,6 +19,7 @@ public class Guard : MonoBehaviour
     [Header("Audio")]
     public AudioClip bonkSound;
     public AudioClip hurtSound;
+    public AudioClip alertSound;
     public AudioClip dieSound;
 
     [Header ("Chasing")]
@@ -294,7 +295,8 @@ public class Guard : MonoBehaviour
             return;
 
         //Audio
-        //TODO
+        if (alertSound != null)
+            audioSrc.PlayOneShot(alertSound);
 
         //Go to position
         SetTargetDestination(targetPos);

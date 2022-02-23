@@ -126,7 +126,6 @@ public class HUD : MonoBehaviour
 
     void HandleStatus()
     {
-
         if (guardManager == null)
             return;
 
