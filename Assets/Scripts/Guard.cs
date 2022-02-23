@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class Guard : MonoBehaviour
 {
+    GameManager gameMan;
+    GuardManager guardMan;
     AudioSource audioSrc;
     NavMeshAgent agent;
     Animator anim;
@@ -46,16 +48,16 @@ public class Guard : MonoBehaviour
     float lastTimeSpotted;
     float lastTimeChased;
 
+    [Header("Vitals")]
+    public bool isAlive = true;
+
+    Transform target;
     bool attacking;
     bool isChasing;
     bool isSlowed;
-    public bool isAlive = true;
-    Transform target;
 
     List<Transform> waypoints = new List<Transform>();
     int waypointIndex;
-
-    public float health = 50f;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +67,8 @@ public class Guard : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         target = FindObjectOfType<Player>().transform;
+        guardMan = FindObjectOfType<GuardManager>();
+        gameMan = FindObjectOfType<GameManager>();
 
         //Get limb rigidbodies
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
@@ -115,6 +119,16 @@ public class Guard : MonoBehaviour
                 {
                     if (CanSeePlayer())
                     {
+                        //Alert gamemanager
+                        GameManager game = FindObjectOfType<GameManager>();
+                        if (game != null && !game.alerted)
+                        {
+                            game.alerted = true;
+
+                            //Spawn more guards
+                            guardMan.StartSpawningTroops();
+                        }
+                            
                         //Chase audio
                         if (!isChasing)
                             PlayChaseAudio();
@@ -124,6 +138,7 @@ public class Guard : MonoBehaviour
                         agent.speed = runSpeed;
                         SetTargetDestination(target.position);
 
+                        //Update chase timer
                         lastTimeChased = Time.time;
                     }
                     else
@@ -161,11 +176,18 @@ public class Guard : MonoBehaviour
             {
                 if (agent.remainingDistance < 0.25f)
                 {
-                    //Check if path is complete and start it again
-                    if (waypointIndex == waypoints.Count - 1) waypointIndex = 0;
-                    else waypointIndex++;
+                    if (gameMan != null && gameMan.alerted) //Wander around looking for the player
+                    {
+                        SetTargetDestination(guardMan.GetRandomWaypoint().position);
+                    }
+                    else //Follow path
+                    {
+                        //Check if path is complete and start it again
+                        if (waypointIndex == waypoints.Count - 1) waypointIndex = 0;
+                        else waypointIndex++;
 
-                    SetTargetDestination(waypoints[waypointIndex].position);
+                        SetTargetDestination(waypoints[waypointIndex].position);
+                    }                  
                 }
             }
             else //Try to attack
@@ -176,10 +198,6 @@ public class Guard : MonoBehaviour
                     Attack();
                 }
             }
-
-            //Dying
-            if (health <= 0)
-                Die();
         }   
     }
 
@@ -264,7 +282,8 @@ public class Guard : MonoBehaviour
 
     public void SetTargetDestination(Vector3 targetPos)
     {
-        agent.SetDestination(targetPos);
+        if (agent.enabled)
+            agent.SetDestination(targetPos);
     }
 
     public void Attack()
@@ -317,14 +336,16 @@ public class Guard : MonoBehaviour
 
         PlayHurtAudio(true);
 
-        EnableRagdoll();
+        EnableRagdoll(false);
+
+        StartCoroutine(ResetAlive(5f));
     }
 
     public void Slowdown(float duration)
     {
         StartCoroutine(ResetWalk(duration));
 
-        PlayHurtAudio(true);
+        PlayHurtAudio(false);
     }
 
     IEnumerator ResetWalk(float delay)
@@ -342,18 +363,31 @@ public class Guard : MonoBehaviour
         anim.SetBool("Slowed", false);
     }
 
-    void EnableRagdoll()
+    IEnumerator ResetAlive(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        isAlive = true;
+        isChasing = false;
+        anim.enabled = true;
+        agent.enabled = true;
+        myCol.enabled = true;
+
+        EnableRagdoll(true);
+    }
+
+    void EnableRagdoll(bool state)
     {
         //Make rigidbodies react to physics
         foreach(Rigidbody rb in limbs)
         {
-            rb.isKinematic = false;
+            rb.isKinematic = state;
         }
 
         //Make colliders collide
         foreach(Collider col in cols)
         {
-            col.isTrigger = false;
+            col.isTrigger = state;
         }
     }
 

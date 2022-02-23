@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class Hiace : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class Hiace : MonoBehaviour
     {
         if (objectiveDone && Input.GetKeyDown(KeyCode.E) && atDoor)
         {
-            EditorSceneManager.LoadScene(0);
+            SceneManager.LoadScene(0);
         }
     }
     void OnTriggerEnter(Collider other)

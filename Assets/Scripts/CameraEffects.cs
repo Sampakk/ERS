@@ -44,8 +44,7 @@ public class CameraEffects : MonoBehaviour
 
     void HeadBobbing()
     {
-        //Add groundcheck to headbobbing - no getter in player.cs !!!!
-        if (player.IsRunning())
+        if (player.IsRunning() && player.IsGrounded())
         {
             float offset = Mathf.Sin(Time.time * headbobSpeed) * headbobAmount;
 

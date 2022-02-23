@@ -7,7 +7,12 @@ public class GuardManager : MonoBehaviour
 {
     public GameObject guardPrefab;
 
-    [Header("Paths")]
+    [Header("Troops")]
+    public Transform troopsSpawnpoint;
+    public int troopsCount = 1;
+
+    [Header("Paths & Waypoints")]
+    public Transform waypoints;
     public Transform[] paths;
 
     List<Guard> guards = new List<Guard>();
@@ -28,11 +33,44 @@ public class GuardManager : MonoBehaviour
 
     void SpawnGuardOnPath(Transform path)
     {
+        //Instantiate
         GameObject guard = Instantiate(guardPrefab, path.GetChild(0).position, Quaternion.identity);
         guard.GetComponent<Guard>().SetupPath(path);
 
         //Add to list
         guards.Add(guard.GetComponent<Guard>());
+    }
+
+    public void StartSpawningTroops()
+    {
+        StartCoroutine(SpawnTroops());
+    }
+
+    IEnumerator SpawnTroops()
+    {
+        int count = 0;
+        while (count < troopsCount)
+        {
+            //Instantiate
+            GameObject guard = Instantiate(guardPrefab, troopsSpawnpoint.position, Quaternion.identity);
+
+            //Add to list
+            guards.Add(guard.GetComponent<Guard>());
+
+            count++;
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    public Transform GetRandomWaypoint()
+    {
+        Transform waypoint = null;
+
+        //Get random waypoint
+        int randomWaypoint = Random.Range(0, waypoints.childCount);
+        waypoint = waypoints.GetChild(randomWaypoint);
+
+        return waypoint;
     }
 
     public bool IsPlayerChased()

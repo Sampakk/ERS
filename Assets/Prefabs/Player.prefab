@@ -370,6 +370,11 @@ MonoBehaviour:
   ceilingCheck: {fileID: 7811136739288468083}
   ceilingDistance: 0.45
   mouseSensitivity: 2
+  maxStamina: 100
+  staminaRegen: 15
+  staminaDrain: 15
+  staminaSlider: {fileID: 7293334611600969626}
+  jumpStaminaCost: 20
   alertSounds:
   - {fileID: 8300000, guid: d4da5b6342d082a48bc3f6f3a34e5a6c, type: 3}
   - {fileID: 8300000, guid: 1f44063c5f9956c428d04979bdda97f9, type: 3}
@@ -718,3 +723,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3165126430658078193, guid: edad97d133b4135469a71865771805f7, type: 3}
   m_PrefabInstance: {fileID: 7089405233963544002}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7293334611600969626 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 528470710804849240, guid: edad97d133b4135469a71865771805f7, type: 3}
+  m_PrefabInstance: {fileID: 7089405233963544002}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
