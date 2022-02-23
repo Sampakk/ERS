@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class HUD : MonoBehaviour
 {
+    [Header("Pause menu")]
+    public static bool GameIsPaused = false;
+    public GameObject pauseMenuUI;
+
+
     Player player;
     Interaction interaction;
     GuardManager guardManager;
@@ -60,6 +66,18 @@ public class HUD : MonoBehaviour
         Objective();
 
         HandleHP();
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameIsPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+        }
 
     }
 
@@ -183,5 +201,32 @@ public class HUD : MonoBehaviour
     void HandleHP()
     {
         HpText.text = "Health: " + player.currentHP.ToString("f0");
+    }
+
+    public void Resume()
+    {
+        Cursor.visible = false;
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        GameIsPaused = false;
+    }
+
+    void Pause()
+    {
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+        GameIsPaused = true;
+        Cursor.visible = true;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
     }
 }

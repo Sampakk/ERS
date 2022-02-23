@@ -126,14 +126,15 @@ public class Player : MonoBehaviour
             }
         }
 
-        //Get mouse movement
-        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
+            //Get mouse movement
+            mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+            mouseY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
+
 
         //Apply vertical rotation and clamp it
-        xRotation = cam.localEulerAngles.x + mouseY;
-        Quaternion cameraRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        cam.localRotation = cameraRotation;
+            xRotation = cam.localEulerAngles.x + mouseY;
+            Quaternion cameraRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            cam.localRotation = cameraRotation;
 
         //Crouching
         if (Input.GetKey(KeyCode.LeftControl))
