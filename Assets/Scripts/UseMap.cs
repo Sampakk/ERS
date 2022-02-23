@@ -66,7 +66,7 @@ public class UseMap : MonoBehaviour
     public void SelectToolShop()
     {
         ExitGameMap();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 }
     

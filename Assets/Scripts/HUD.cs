@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class HUD : MonoBehaviour
 {
@@ -12,21 +13,33 @@ public class HUD : MonoBehaviour
     UseMap useMap;
     Hiace hiace;
 
+    public TextMeshProUGUI score;
+    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI HpText;
+
+    [Header("Interaction")]
     public TextMeshProUGUI statusText;
     public Image  interactIcon;
     public Image throwbar;
     public Image Crosshair;
     public TextMeshProUGUI useText;
-    public TextMeshProUGUI score;
+    
+    [Header("Objectives")]
     public Toggle objective1Toggle;
     public Toggle objective2Toggle;
     public TextMeshProUGUI objective2Text;
     public TextMeshProUGUI objective1Text;
-    public TextMeshProUGUI timerText;
-    public TextMeshProUGUI HpText;
-
-
     public int objectiveScore = 10;
+
+    [Header("Player Icon")]
+    public Image playerIcon;
+    public Sprite standIcon;
+    public Sprite crouchIcon;
+    public Sprite runIcon;
+
+    [Header("Pause Menu")]
+    public GameObject pauseMenuUI;
+    public static bool GameIsPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -55,11 +68,25 @@ public class HUD : MonoBehaviour
 
         HandleStatus();
 
+        HandleIcon();
+
         AddScore();
 
         Objective();
 
         HandleHP();
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameIsPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+        }
 
     }
 
@@ -152,6 +179,22 @@ public class HUD : MonoBehaviour
         }
     }
 
+    void HandleIcon()
+    {
+        if (player.IsCrouched())
+        {
+            playerIcon.sprite = crouchIcon;
+        }
+        else if (player.IsRunning())
+        {
+            playerIcon.sprite = runIcon;
+        }
+        else
+        {
+            playerIcon.sprite = standIcon;
+        }
+    }
+
     void AddScore()
     {
         if (hiace != null)
@@ -176,12 +219,51 @@ public class HUD : MonoBehaviour
             }
         }
     }
+
     public void Timer(float time)
     {
         timerText.text = "Time Before The Cops Arrive: " + time.ToString("f0");
     }
+
     void HandleHP()
     {
         HpText.text = "Health: " + player.currentHP.ToString("f0");
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+
+        //Disable menu
+        pauseMenuUI.SetActive(false);
+        GameIsPaused = false;
+
+        //Hide & lock cursor
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void Pause()
+    {
+        Time.timeScale = 0f;
+
+        //Enable menu
+        pauseMenuUI.SetActive(true);   
+        GameIsPaused = true;
+
+        //Show & unlock cursor
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
     }
 }
