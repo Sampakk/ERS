@@ -11,6 +11,15 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Slider volumeSlider = null;
     [SerializeField] private float defaultVolume = 0.5f;
 
+    [Header("Gameplay Settings")]
+    [SerializeField] private TMP_Text MouseSensTextValue;
+    [SerializeField] private Slider MouseSensSlider;
+    [SerializeField] private float defaultSens = 1f;
+    [SerializeField] private Toggle BhopToggle = null;
+    public float MouseSens = 1f;
+    public static int Bhop = 0;
+
+    [Header("Confirmation")]
     [SerializeField] private GameObject confirmationPrompt = null;
 
     [Header("Levels To Load")]
@@ -50,6 +59,19 @@ public class MenuController : MonoBehaviour
         volumeTextValue.text = volume.ToString("0.0");
     }
 
+    public void SetMouseSensitivity(float sensitivity)
+    {
+        MouseSens = sensitivity;
+        MouseSensTextValue.text = sensitivity.ToString("0.0");
+    }
+
+    public void GameplayApply()
+    {
+        PlayerPrefs.SetFloat("masterSen", MouseSens);
+        PlayerPrefs.SetInt("Bhop", Bhop);
+        StartCoroutine(ConfirmationBox());
+    }
+
     public void VolumeApply()
     {
         PlayerPrefs.SetFloat("masterVolume", AudioListener.volume);
@@ -72,5 +94,19 @@ public class MenuController : MonoBehaviour
         confirmationPrompt.SetActive(true);
         yield return new WaitForSeconds(2);
         confirmationPrompt.SetActive(false);
+    }
+
+    public void BindJumpToMouseWheel()
+    {
+        if (BhopToggle.isOn)
+        {
+            Bhop = 1;
+           
+        }
+        else
+        {
+            Bhop = 0;
+           
+        }
     }
 }
