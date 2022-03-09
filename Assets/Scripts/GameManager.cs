@@ -114,6 +114,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
 
         //Load to HQ
+        Time.timeScale = 1;
         SceneManager.LoadScene(1);
     }
 
