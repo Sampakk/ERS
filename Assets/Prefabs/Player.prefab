@@ -386,7 +386,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d4da5b6342d082a48bc3f6f3a34e5a6c, type: 3}
   - {fileID: 8300000, guid: 1f44063c5f9956c428d04979bdda97f9, type: 3}
   - {fileID: 8300000, guid: 5aa6429b95e5f7749ad6ff89c2c9dcf2, type: 3}
-  footsteps: {fileID: 8300000, guid: 2e57a05b315d0e049a81044ee99eb3f8, type: 3}
+  footstepSounds:
+  - {fileID: 8300000, guid: 2e57a05b315d0e049a81044ee99eb3f8, type: 3}
+  - {fileID: 8300000, guid: 59c312cad683f4d47b4ab50365c1d1ef, type: 3}
+  - {fileID: 8300000, guid: f5e07b45545a6a646874e043f7c8fa4e, type: 3}
+  footstepDelay: 0.5
 --- !u!114 &1504509271
 MonoBehaviour:
   m_ObjectHideFlags: 0

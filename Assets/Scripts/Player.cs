@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     Rigidbody rb;
     Transform cam;
     Interaction interact;
+    AudioSource audioSrc;
     CapsuleCollider col;
     CapsuleCollider wallCol;
 
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     public float crouchHeight;
     Quaternion targetRotation;
     bool isCrouched;
+    float moveSpeed;
 
     [Header("Ground check")]
     public Transform groundCheck;
@@ -31,14 +33,6 @@ public class Player : MonoBehaviour
     [Header("Mouselook")]
     public float mouseSensitivity = 2f;
     
-    float moveSpeedMultiplier = 1f;
-    float moveX, moveZ;
-    float moveSpeed;
-    float mouseX, mouseY;
-    float xRotation = 0f;
-    float originalHeight;
-    float groundCheckHeight;
-
     [Header("Stamina")]
     public float maxStamina = 100f;
     public float staminaRegen = 5f;
@@ -57,16 +51,23 @@ public class Player : MonoBehaviour
     [Header("Sounds")]
     public AudioClip[] hurtSounds;
     public AudioClip[] alertSounds;
-
+    
     [Header("Footsteps")]
-    public AudioClip footsteps;
-    AudioSource audioSource;
-    float TimeToNextFootsteps = 0.5f;
+    public AudioClip[] footstepSounds;
+    public float footstepDelay = 0.4f;
+    float lastFootstepAt;
+
+    float moveSpeedMultiplier = 1f;
+    float moveX, moveZ;
+    float mouseX, mouseY;
+    float xRotation = 0f;
+    float originalHeight;
+    float groundCheckHeight;
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSrc = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>().transform;
         interact = GetComponent<Interaction>();
@@ -163,7 +164,7 @@ public class Player : MonoBehaviour
 
             //Play eesti
             int random = Random.Range(0, alertSounds.Length);
-            audioSource.PlayOneShot(alertSounds[random]);
+            audioSrc.PlayOneShot(alertSounds[random]);
         }
     }
 
@@ -266,32 +267,30 @@ public class Player : MonoBehaviour
 
     void Footsteps()
     {
-        TimeToNextFootsteps = TimeToNextFootsteps - Time.deltaTime;
-        Vector3 vel = rb.velocity;
-
-
-        //sprint footsteps
-        if (IsGrounded() && vel.magnitude > 6.5f && TimeToNextFootsteps <= 0f && !isCrouched)
+        //Check if grounded and not still
+        if (IsGrounded() && rb.velocity.magnitude > 0.5f)
         {
-            audioSource.volume = 0.4f;
-            audioSource.Play();
-            TimeToNextFootsteps = 0.3f;
-        }
+            //Check if time has passed since last footstep
+            if (Time.time >= lastFootstepAt + footstepDelay / moveSpeedMultiplier)
+            {
+                lastFootstepAt = Time.time;
 
-        //walking footsteps
-        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && !isCrouched)
-        {
-            audioSource.volume = 0.3f;
-            audioSource.Play();
-            TimeToNextFootsteps = 0.5f;
-        }
+                //Get random footstep sound
+                AudioClip footstep = footstepSounds[Random.Range(0, footstepSounds.Length)];
 
-        //crouched footsteps
-        else if (IsGrounded() && vel.magnitude > 3f && TimeToNextFootsteps <= 0f && isCrouched)
-        {
-            audioSource.volume = 0.25f;
-            audioSource.Play();
-            TimeToNextFootsteps = 0.75f;
+                if (IsRunning()) //Running
+                {
+                    audioSrc.PlayOneShot(footstep, 0.4f);
+                }
+                else if (IsCrouched()) //Crouching
+                {
+                    audioSrc.PlayOneShot(footstep, 0.2f);
+                }
+                else //Walking
+                {
+                    audioSrc.PlayOneShot(footstep, 0.3f);
+                }
+            }
         }
     }
 
@@ -320,7 +319,7 @@ public class Player : MonoBehaviour
 
         //Audio
         int random = Random.Range(0, hurtSounds.Length);
-        audioSource.PlayOneShot(hurtSounds[random]);
+        audioSrc.PlayOneShot(hurtSounds[random]);
     }
 
     //Booleans
