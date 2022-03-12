@@ -93,8 +93,6 @@ public class Interaction : MonoBehaviour
 
     public void PickItemUp()
     {
-        //itemrb.isKinematic = false;
-
         //Put object in correct position in "hands"
         item.parent = hands;
         item.localPosition = Vector3.zero;
@@ -103,11 +101,9 @@ public class Interaction : MonoBehaviour
         itemrb.velocity = Vector3.zero;
         itemrb.angularVelocity = Vector3.zero;
         
-        //These ones freeze and disable collider once you pick up the object
+        //Disable collider & make rigidbody kinematic
         itemcol.enabled = false;
-        itemrb.useGravity = false;
-        itemrb.freezeRotation = true;
-        itemrb.constraints = RigidbodyConstraints.FreezePosition;
+        itemrb.isKinematic = true;
     }
 
     public void DropItem()
@@ -115,13 +111,9 @@ public class Interaction : MonoBehaviour
         //Disable parent
         item.parent = null;
 
-        //Enable collider
+        //Enable collider & make rigidoby dynamic
         itemcol.enabled = true;
-
-        //Activate rigidbody
-        itemrb.useGravity = true;
-        itemrb.freezeRotation = false;
-        itemrb.constraints = RigidbodyConstraints.None;
+        itemrb.isKinematic = false;
     }
 
     void Throw()
@@ -143,8 +135,10 @@ public class Interaction : MonoBehaviour
 
     void ThrowItem(Vector3 direction, Vector3 torgue, float throwForce)
     {
+        //Detach item from players hands
         DropItem();
 
+        //Add force & torgue to item
         itemrb.AddForce(direction * throwForce, ForceMode.Impulse);
         itemrb.AddTorque(torgue, ForceMode.Impulse);
     }
